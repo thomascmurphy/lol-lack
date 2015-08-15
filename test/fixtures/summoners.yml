@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  summoner_id: 1
+  summoner_name: MyString
+  last_checked: 2015-08-12 08:52:47
+  tier: MyString
+  division: MyString
+
+two:
+  summoner_id: 1
+  summoner_name: MyString
+  last_checked: 2015-08-12 08:52:47
+  tier: MyString
+  division: MyString

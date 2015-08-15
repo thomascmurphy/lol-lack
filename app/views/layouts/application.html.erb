@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>LolLack</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -8,7 +8,21 @@
 </head>
 <body>
 
-<%= yield %>
+  <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <% if notice %>
+            <div class="alert alert-info" role="alert"><%= notice %></div>
+          <% end %>
+          <% if alert %>
+            <div class="alert alert-danger" role="alert"><%= alert %></div>
+          <% end %>
+
+          <%= yield %>
+
+        </div>
+      </div>
+    </div>
 
 </body>
 </html>

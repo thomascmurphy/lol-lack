@@ -34,6 +34,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'bootstrap-sass'
 gem 'httparty'
+gem 'whenever', :require => false
+gem 'delayed_job_active_record'
+gem 'daemons'
 
 group :development, :test do
   gem 'pry'
