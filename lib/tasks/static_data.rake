@@ -22,4 +22,26 @@ namespace :static_data do
     end
   end
 
+  task initial_game_data: :environment do
+    #60263441 = tomutron (silver)
+    #53884466 = Vulgate (gold)
+    #40308699 = G0liath online (platinum)
+    #39567812 = Dragon SS (diamond)
+    #25850956 = Nightblue3 (master)
+    #65409090 = GodPiglet (challenger)
+    #summoner_ids = [60263441, 53884466, 40308699, 39567812, 25850956, 65409090]
+    summoner_ids = [60263441]
+    summoner_ids.each do |summoner_id|
+      Match.grab_summoner_match_ids(summoner_id, 'na')
+    end
+  end
+
+  task convert_game_data: :environment do
+    limit = Rails.env == 'production' ? 100000 : 400
+    matches = Match.where(processed: false).limit(limit)
+    matches.each do |match|
+      Delayed::Job.enqueue(MatchDataJob.new(match.id), run_at:MatchDataJob.queue_time())
+    end
+  end
+
 end

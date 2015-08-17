@@ -7,8 +7,8 @@ class SummonerController < ApplicationController
     if params[:summoner_name].present?
       @summoner_name = ERB::Util.url_encode(params[:summoner_name].downcase.gsub(/\s+/, ""))
       @summoner = Summoner.find_or_initialize_by(summoner_name: @summoner_name)
+      lol_request = Lol::Request.new('na')
       if @summoner.new_record?
-        lol_request = Lol::Request.new('na')
         summoner_data = lol_request.summoner_by_name(@summoner_name)
         @summoner.summoner_id = summoner_data[summoner_data.keys[0]]["id"]
         @summoner.save()

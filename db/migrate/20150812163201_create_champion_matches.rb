@@ -4,6 +4,7 @@ class CreateChampionMatches < ActiveRecord::Migration
       t.integer :summoner_id, index: true
       t.integer :champion_id, index: true
       t.integer :match_id, index: true
+      t.string :region, index: true
       t.string :season, index: true
       t.string :version, index: true
       t.integer :duration

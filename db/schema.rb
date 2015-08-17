@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150812163201) do
+ActiveRecord::Schema.define(version: 20150817193135) do
 
   create_table "champion_matches", force: :cascade do |t|
     t.integer  "summoner_id"
     t.integer  "champion_id"
     t.integer  "match_id"
+    t.string   "region"
     t.string   "season"
     t.string   "version"
     t.integer  "duration"
@@ -74,6 +75,7 @@ ActiveRecord::Schema.define(version: 20150812163201) do
   add_index "champion_matches", ["champion_id"], name: "index_champion_matches_on_champion_id"
   add_index "champion_matches", ["lane"], name: "index_champion_matches_on_lane"
   add_index "champion_matches", ["match_id"], name: "index_champion_matches_on_match_id"
+  add_index "champion_matches", ["region"], name: "index_champion_matches_on_region"
   add_index "champion_matches", ["role"], name: "index_champion_matches_on_role"
   add_index "champion_matches", ["season"], name: "index_champion_matches_on_season"
   add_index "champion_matches", ["summoner_id"], name: "index_champion_matches_on_summoner_id"
@@ -88,6 +90,8 @@ ActiveRecord::Schema.define(version: 20150812163201) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  add_index "champions", ["champion_id"], name: "index_champions_on_champion_id"
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -104,6 +108,18 @@ ActiveRecord::Schema.define(version: 20150812163201) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+
+  create_table "matches", force: :cascade do |t|
+    t.integer  "match_id"
+    t.string   "region"
+    t.boolean  "processed",  default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "matches", ["match_id"], name: "index_matches_on_match_id"
+  add_index "matches", ["processed"], name: "index_matches_on_processed"
+  add_index "matches", ["region"], name: "index_matches_on_region"
 
   create_table "summoners", force: :cascade do |t|
     t.integer  "summoner_id"

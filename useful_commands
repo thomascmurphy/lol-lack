@@ -1,0 +1,2 @@
+if getting locked db error
+ActiveRecord::Base.connection.execute("BEGIN TRANSACTION; END;")

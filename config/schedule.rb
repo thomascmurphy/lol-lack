@@ -18,3 +18,8 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+
+every 10.minutes do
+  rake "static_data:convert_game_data"
+end

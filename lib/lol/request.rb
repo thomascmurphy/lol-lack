@@ -1,10 +1,14 @@
 module Lol
+  class NotFound < StandardError; end
+  class TooManyRequests < StandardError; end
+  class InvalidCacheStore < StandardError; end
+
   class Request
 
     include HTTParty
     base_uri 'https://na.api.pvp.net/api/lol'
 
-    def initialize(region)
+    def initialize(region="na")
       @region = region
       @options = { query: {api_key: Rails.application.secrets.lol_api_key} }
     end
@@ -15,7 +19,13 @@ module Lol
         @base_api.prepend("/static-data")
       end
       @options[:query] = @options[:query].merge(extra_query)
-      self.class.get(@base_api + url, @options)
+      response = self.class.get(@base_api + url, @options)
+      if response.respond_to?(:code) && !(200...300).include?(response.code)
+        raise NotFound.new("404 Not Found") if response.not_found?
+        raise TooManyRequests.new('429 Rate limit exceeded') if response.code == 429
+        raise InvalidAPIResponse.new(url, response)
+      end
+      response
     end
 
     def latest_version
@@ -40,6 +50,10 @@ module Lol
 
     def match_history_detailed(user_id, query={})
       call("matchhistory/#{user_id}", 2.2, query)
+    end
+
+    def match_detail(match_id)
+      call("match/#{match_id}", 2.2)
     end
 
     def league_by_summoner(summoner_id)

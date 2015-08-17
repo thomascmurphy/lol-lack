@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  get 'user/index'
-  get 'user/:summoner_name' => 'user#show'
+  get 'summoner/index'
+  get 'summoner/:summoner_name' => 'summoner#show'
 
-  root 'user#index'
+  root 'summoner#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
