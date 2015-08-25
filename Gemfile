@@ -37,6 +37,7 @@ gem 'httparty'
 gem 'whenever', :require => false
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'pg'
 
 group :development, :test do
   gem 'pry'
