@@ -10,7 +10,7 @@ class MatchDataJob < Struct.new(:match_id_ours)
   def self.queue_time
     last_job = Delayed::Job.where("handler LIKE '%MatchDataJob%'").order("run_at DESC").first()
     if last_job.present?
-      last_job.run_at + 1.seconds
+      last_job.run_at + 10.seconds
     else
       DateTime.now().utc
     end
@@ -41,7 +41,7 @@ class MatchDataJob < Struct.new(:match_id_ours)
   end
 
   def next_rate_limit_window
-    self.class.queue_time + 30.seconds
+    self.class.queue_time + 1.minutes
   end
 
 end
