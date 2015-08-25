@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150817193135) do
+ActiveRecord::Schema.define(version: 20150825201658) do
 
   create_table "champion_matches", force: :cascade do |t|
-    t.integer  "summoner_id"
+    t.integer  "summoner_id",               limit: 8
     t.integer  "champion_id"
-    t.integer  "match_id"
+    t.integer  "match_id",                  limit: 8
     t.string   "region"
     t.string   "season"
     t.string   "version"
@@ -70,8 +70,8 @@ ActiveRecord::Schema.define(version: 20150817193135) do
     t.integer  "team_inhibitor_kills"
     t.integer  "team_kills"
     t.integer  "team_deaths"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   add_index "champion_matches", ["champion_id"], name: "index_champion_matches_on_champion_id"
@@ -112,11 +112,11 @@ ActiveRecord::Schema.define(version: 20150817193135) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "matches", force: :cascade do |t|
-    t.integer  "match_id"
+    t.integer  "match_id",   limit: 8
     t.string   "region"
-    t.boolean  "processed",  default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.boolean  "processed",            default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   add_index "matches", ["match_id"], name: "index_matches_on_match_id"
@@ -124,14 +124,14 @@ ActiveRecord::Schema.define(version: 20150817193135) do
   add_index "matches", ["region"], name: "index_matches_on_region"
 
   create_table "summoners", force: :cascade do |t|
-    t.integer  "summoner_id"
+    t.integer  "summoner_id",   limit: 8
     t.string   "summoner_name"
     t.datetime "last_checked"
     t.string   "region"
     t.string   "tier"
     t.string   "division"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   add_index "summoners", ["summoner_id"], name: "index_summoners_on_summoner_id"

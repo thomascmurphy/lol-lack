@@ -1,6 +1,14 @@
 if getting locked db error
 ActiveRecord::Base.connection.execute("BEGIN TRANSACTION; END;")
 
+bin/rake db:migrate:reset   (reset db)
+bin/rake db:reset db:seed   (clears db and seeds)
+bin/rake db:migrate:down VERSION=20150331134827 (removes that migration, then you can delete file)
+
+bin/rails generate migration AddJobToSkills job:references
+
+if getting locked db error
+ActiveRecord::Base.connection.execute("BEGIN TRANSACTION; END;")
 
 export GEM_HOME=$PWD/gems
 export RUBYLIB=$PWD/lib
