@@ -34,3 +34,12 @@ bundle exec whenever -h
 
 crontab -r
 whenever --update-crontab --set environment='development'
+
+
+rake secret
+export SECRET_KEY_BASE=
+../bin/restart
+
+ps -u suffrage -o pid,rss,command | awk '{print $0}{sum+=$2} END {print "Total", sum/1024, "MB"}'
+
+ps -u suffrage -o size,pid,user,command --sort -size | awk '{ hr=$1/1024 ; printf("%13.2f Mb ",hr) } { for ( x=4 ; x<=NF ; x++ ) { printf("%s ",$x) } print "" }'

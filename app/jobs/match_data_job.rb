@@ -41,7 +41,7 @@ class MatchDataJob < Struct.new(:match_id_ours)
   end
 
   def next_rate_limit_window
-    self.queue_time + 30.seconds
+    self.class.queue_time + 30.seconds
   end
 
 end
