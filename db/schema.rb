@@ -68,6 +68,8 @@ ActiveRecord::Schema.define(version: 20150817193135) do
     t.integer  "team_baron_kills"
     t.integer  "team_tower_kills"
     t.integer  "team_inhibitor_kills"
+    t.integer  "team_kills"
+    t.integer  "team_deaths"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
   end
@@ -125,6 +127,7 @@ ActiveRecord::Schema.define(version: 20150817193135) do
     t.integer  "summoner_id"
     t.string   "summoner_name"
     t.datetime "last_checked"
+    t.string   "region"
     t.string   "tier"
     t.string   "division"
     t.datetime "created_at",    null: false

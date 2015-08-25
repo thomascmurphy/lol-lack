@@ -17,6 +17,20 @@ class ChampionMatch < ActiveRecord::Base
     self.save()
   end
 
+  def convert_team_calculated_fields(api_response, team_id)
+    team_kills = 0
+    team_deaths = 0
+    api_response["participants"].each do |participant_data|
+      if participant_data["teamId"] == team_id
+        team_kills += participant_data["stats"]["kills"]
+        team_deaths += participant_data["stats"]["deaths"]
+      end
+    end
+    self.team_kills = team_kills
+    self.team_deaths = team_deaths
+    self.save()
+  end
+
   def convert_summoner_fields(api_response, summoner_id)
     self.summoner_id = summoner_id
     self.tier = api_response["highestAchievedSeasonTier"]
@@ -82,5 +96,99 @@ class ChampionMatch < ActiveRecord::Base
     end
 
     self.save()
+  end
+
+  def self.average_values(matches)
+    if matches.count > 0
+      kills = matches.average('kills')
+      deaths = matches.average('deaths')
+      kda = deaths > 0 ? (kills + matches.average('assists')) / deaths : kills + matches.average('assists')
+      structures_destroyed = matches.average('inhibitor_kills') + matches.average('tower_kills')
+      team_structures_destroyed = matches.average('team_inhibitor_kills') + matches.average('team_tower_kills')
+      structure_participation = team_structures_destroyed > 0 ? structures_destroyed / team_structures_destroyed : 0
+      first_blood_participation = matches.where("first_blood_kill = ? OR first_blood_assist = ?", true, true).count.to_f / matches.count.to_f
+      team_kills = matches.average('team_kills')
+      kill_participation = team_kills > 0 ? kills / team_kills : 1
+      team_deaths = matches.average('team_deaths')
+      death_participation = team_deaths > 0 ? deaths / team_deaths : 0
+      total_damage_dealt_champs = matches.average('total_damage_dealt_champs')
+      total_damage_taken = matches.average('total_damage_taken')
+      monsters_team_jungle = matches.average('monsters_team_jungle')
+      monsters_enemy_jungle = matches.average('monsters_enemy_jungle')
+      team_dragon_kills = matches.average('team_dragon_kills')
+      team_baron_kills = matches.average('team_baron_kills')
+
+      xp_per_min = {zero_ten: (matches.average('xp_per_min_0_10') || 0).round(2).to_f,
+                    ten_twenty: (matches.average('xp_per_min_10_20') || 0).round(2).to_f,
+                    twenty_thirty: (matches.average('xp_per_min_20_30') || 0).round(2).to_f,
+                    thirty_end: (matches.average('xp_per_min_30_end') || 0).round(2).to_f}
+      xp_diff = {zero_ten: (matches.average('xp_diff_0_10') || 0).round(2).to_f,
+                 ten_twenty: (matches.average('xp_diff_10_20') || 0).round(2).to_f,
+                 twenty_thirty: (matches.average('xp_diff_20_30') || 0).round(2).to_f,
+                 thirty_end: (matches.average('xp_diff_30_end') || 0).round(2).to_f}
+      cs_per_min = {zero_ten: (matches.average('cs_per_min_0_10') || 0).round(2).to_f,
+                    ten_twenty: (matches.average('cs_per_min_10_20') || 0).round(2).to_f,
+                    twenty_thirty: (matches.average('cs_per_min_20_30') || 0).round(2).to_f,
+                    thirty_end: (matches.average('cs_per_min_30_end') || 0).round(2).to_f}
+      cs_diff = {zero_ten: (matches.average('cs_diff_0_10') || 0).round(2).to_f,
+                 ten_twenty: (matches.average('cs_diff_10_20') || 0).round(2).to_f,
+                 twenty_thirty: (matches.average('cs_diff_20_30') || 0).round(2).to_f,
+                 thirty_end: (matches.average('cs_diff_30_end') || 0).round(2).to_f}
+      gold_per_min = {zero_ten: (matches.average('gold_per_min_0_10') || 0).round(2).to_f,
+                      ten_twenty: (matches.average('gold_per_min_10_20') || 0).round(2).to_f,
+                      twenty_thirty: (matches.average('gold_per_min_20_30') || 0).round(2).to_f,
+                      thirty_end: (matches.average('gold_per_min_30_end') || 0).round(2).to_f}
+      damage_taken_diff = {zero_ten: (matches.average('damage_taken_diff_0_10') || 0).round(2).to_f,
+                           ten_twenty: (matches.average('damage_taken_diff_10_20') || 0).round(2).to_f,
+                           twenty_thirty: (matches.average('damage_taken_diff_20_30') || 0).round(2).to_f,
+                           thirty_end: (matches.average('damage_taken_diff_30_end') || 0).round(2).to_f}
+      {count: matches.count,
+       kda: kda.round(2).to_f,
+       duration: matches.average('duration').round(0).to_f,
+       structure_participation: structure_participation.round(3).to_f,
+       wards_placed: matches.average('wards_placed').round(2).to_f,
+       wards_killed: matches.average('wards_killed').round(2).to_f,
+       first_blood_participation: first_blood_participation.round(3).to_f,
+       kill_participation: kill_participation.round(3).to_f,
+       death_participation: death_participation.round(3).to_f,
+       total_damage_dealt_champs: total_damage_dealt_champs.round(2).to_f,
+       total_damage_taken: total_damage_taken.round(2).to_f,
+       monsters_team_jungle: monsters_team_jungle.round(2).to_f,
+       monsters_enemy_jungle: monsters_enemy_jungle.round(2).to_f,
+       team_dragon_kills: team_dragon_kills.round(2).to_f,
+       team_baron_kills: team_baron_kills.round(2).to_f,
+       xp_per_min: xp_per_min,
+       xp_diff: xp_diff,
+       cs_per_min: cs_per_min,
+       cs_diff: cs_diff,
+       gold_per_min: gold_per_min,
+       damage_taken_diff: damage_taken_diff}
+    else
+      nil
+    end
+  end
+
+  def self.convertRole(role)
+    lane_role = {lane: "", role: ""}
+    if (role.present?)
+      case role.downcase
+      when 'top'
+        lane_role[:lane] = 'TOP'
+        lane_role[:role] = 'SOLO'
+      when 'jungle'
+        lane_role[:lane] = 'JUNGLE'
+        lane_role[:role] = 'NONE'
+      when 'mid'
+        lane_role[:lane] = 'MIDDLE'
+        lane_role[:role] = 'SOLO'
+      when 'adc'
+        lane_role[:lane] = 'BOTTOM'
+        lane_role[:role] = 'DUO_CARRY'
+      when 'support'
+        lane_role[:lane] = 'BOTTOM'
+        lane_role[:role] = 'DUO_SUPPORT'
+      end
+    end
+    return lane_role
   end
 end

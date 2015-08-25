@@ -57,7 +57,7 @@ module Lol
     end
 
     def league_by_summoner(summoner_id)
-      call("league/by-summoner/#{summoner_id}", 2.5)
+      call("league/by-summoner/#{summoner_id}/entry", 2.5)
     end
 
   end

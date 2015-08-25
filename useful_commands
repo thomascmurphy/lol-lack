@@ -1,2 +1,28 @@
 if getting locked db error
 ActiveRecord::Base.connection.execute("BEGIN TRANSACTION; END;")
+
+
+export GEM_HOME=$PWD/gems
+export RUBYLIB=$PWD/lib
+export PATH=$PWD/bin:$PATH
+
+Change to your application's directory.
+cd /my/app
+
+# View config/schedule.rb converted to cron syntax
+bundle exec whenever
+
+# Update crontab
+bundle exec whenever -i
+
+# Overwrite the whole crontab (be careful with this one!)
+bundle exec whenever -w
+
+# See all the options for the whenever command
+bundle exec whenever -h
+
+
+
+
+crontab -r
+whenever --update-crontab --set environment='development'

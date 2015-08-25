@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'summoner/index'
-  get 'summoner/:summoner_name' => 'summoner#show'
+  post 'summoner/search', to: 'summoner#search'
+  get 'summoner/:summoner_name', to: 'summoner#show', as: 'summoner'
 
   root 'summoner#index'
 

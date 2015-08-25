@@ -64,6 +64,8 @@ class CreateChampionMatches < ActiveRecord::Migration
       t.integer :team_baron_kills
       t.integer :team_tower_kills
       t.integer :team_inhibitor_kills
+      t.integer :team_kills
+      t.integer :team_deaths
 
       t.timestamps null: false
     end

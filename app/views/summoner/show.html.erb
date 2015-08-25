@@ -1,3 +1,187 @@
-Show <%= @summoner_name %>
+<div class="row">
+  <div class="col-xs-2">
+    <img src="<%= @champion.image %>" alt="<%= @champion.name %>" class="img-responsive"/>
+  </div>
+  <div class="col-xs-10">
+    <h1><%= @champion.name %> <small>(<%= @role %>)</small></h1>
+    <h4>Comparing <%= @summoner_name %>'s last <% if @user_stats %><%= @user_stats[:count] %><% else %>0<% end %> matches with
+      <% if @average_stats %><%= @average_stats[:count] %><% else %>0<% end %> <%= @tier.capitalize %>-level matches</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h2>Kills</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>KDA</th>
+          <th>Kill Participation</th>
+          <th>Death Participation</th>
+          <th>First Blood Participation</th>
+          <th>Damage Dealt</th>
+          <th>Damage Taken</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @average_stats %>
+          <tr>
+            <td><%= @tier.capitalize %></td>
+            <td><%= @average_stats[:kda] %></td>
+            <td><%= number_to_percentage(@average_stats[:kill_participation] * 100, precision: 1) %></td>
+            <td><%= number_to_percentage(@average_stats[:death_participation] * 100, precision: 1) %></td>
+            <td><%= number_to_percentage(@average_stats[:first_blood_participation] * 100, precision: 1) %></td>
+            <td><%= @average_stats[:total_damage_dealt_champs] %></td>
+            <td><%= @average_stats[:total_damage_taken] %></td>
+          </tr>
+        <% end %>
+        <% if @user_stats %>
+          <tr>
+            <td><%= @summoner.summoner_name %></td>
+            <td><%= @user_stats[:kda] %></td>
+            <td><%= number_to_percentage(@user_stats[:kill_participation] * 100, precision: 1) %></td>
+            <td><%= number_to_percentage(@user_stats[:death_participation] * 100, precision: 1) %></td>
+            <td><%= number_to_percentage(@user_stats[:first_blood_participation] * 100, precision: 1) %></td>
+            <td><%= @user_stats[:total_damage_dealt_champs] %></td>
+            <td><%= @user_stats[:total_damage_taken] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<%= @user_game_ids %>
+<div class="row">
+  <div class="col-xs-12">
+    <h2>Objectives</h2>
+    <table class="table table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Structure Participation</th>
+          <th>Wards Placed</th>
+          <th>Wards Killed</th>
+          <th>Dragons</th>
+          <th>Barons</th>
+          <th>Team Jungle Camps</th>
+          <th>Enemy Jungle Camps</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @average_stats %>
+          <tr>
+            <td><%= @tier.capitalize %></td>
+            <td><%= number_to_percentage(@average_stats[:structure_participation] * 100, precision: 1) %></td>
+            <td><%= @average_stats[:wards_placed] %></td>
+            <td><%= @average_stats[:wards_killed] %></td>
+            <td><%= @average_stats[:team_dragon_kills] %></td>
+            <td><%= @average_stats[:team_baron_kills] %></td>
+            <td><%= @average_stats[:monsters_team_jungle] %></td>
+            <td><%= @average_stats[:monsters_enemy_jungle] %></td>
+          </tr>
+        <% end %>
+        <% if @user_stats %>
+          <tr>
+            <td><%= @summoner.summoner_name %></td>
+            <td><%= number_to_percentage(@user_stats[:structure_participation] * 100, precision: 1) %></td>
+            <td><%= @user_stats[:wards_placed] %></td>
+            <td><%= @user_stats[:wards_killed] %></td>
+            <td><%= @user_stats[:team_dragon_kills] %></td>
+            <td><%= @user_stats[:team_baron_kills] %></td>
+            <td><%= @user_stats[:monsters_team_jungle] %></td>
+            <td><%= @user_stats[:monsters_enemy_jungle] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h2>Income</h2>
+    <table class="table table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th colspan="4">XP/min</th>
+          <th colspan="4">XP/min Diff</th>
+          <th colspan="4">CS/min</th>
+          <th colspan="4">CS/min Diff</th>
+          <th colspan="4">Gold/min</th>
+          <th colspan="4">Damage Taken Diff</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @average_stats %>
+          <tr>
+            <td><%= @tier.capitalize %></td>
+            <td><%= @average_stats[:xp_per_min][:zero_ten] %></td>
+            <td><%= @average_stats[:xp_per_min][:ten_twenty] %></td>
+            <td><%= @average_stats[:xp_per_min][:twenty_thirty] %></td>
+            <td><%= @average_stats[:xp_per_min][:thirty_end] %></td>
+
+            <td><%= @average_stats[:xp_diff][:zero_ten] %></td>
+            <td><%= @average_stats[:xp_diff][:ten_twenty] %></td>
+            <td><%= @average_stats[:xp_diff][:twenty_thirty] %></td>
+            <td><%= @average_stats[:xp_diff][:thirty_end] %></td>
+
+            <td><%= @average_stats[:cs_per_min][:zero_ten] %></td>
+            <td><%= @average_stats[:cs_per_min][:ten_twenty] %></td>
+            <td><%= @average_stats[:cs_per_min][:twenty_thirty] %></td>
+            <td><%= @average_stats[:cs_per_min][:thirty_end] %></td>
+
+            <td><%= @average_stats[:cs_diff][:zero_ten] %></td>
+            <td><%= @average_stats[:cs_diff][:ten_twenty] %></td>
+            <td><%= @average_stats[:cs_diff][:twenty_thirty] %></td>
+            <td><%= @average_stats[:cs_diff][:thirty_end] %></td>
+
+            <td><%= @average_stats[:gold_per_min][:zero_ten] %></td>
+            <td><%= @average_stats[:gold_per_min][:ten_twenty] %></td>
+            <td><%= @average_stats[:gold_per_min][:twenty_thirty] %></td>
+            <td><%= @average_stats[:gold_per_min][:thirty_end] %></td>
+
+            <td><%= @average_stats[:damage_taken_diff][:zero_ten] %></td>
+            <td><%= @average_stats[:damage_taken_diff][:ten_twenty] %></td>
+            <td><%= @average_stats[:damage_taken_diff][:twenty_thirty] %></td>
+            <td><%= @average_stats[:damage_taken_diff][:thirty_end] %></td>
+          </tr>
+        <% end %>
+        <% if @user_stats %>
+          <tr>
+            <td><%= @summoner.summoner_name %></td>
+            <td><%= @user_stats[:xp_per_min][:zero_ten] %></td>
+            <td><%= @user_stats[:xp_per_min][:ten_twenty] %></td>
+            <td><%= @user_stats[:xp_per_min][:twenty_thirty] %></td>
+            <td><%= @user_stats[:xp_per_min][:thirty_end] %></td>
+
+            <td><%= @user_stats[:xp_diff][:zero_ten] %></td>
+            <td><%= @user_stats[:xp_diff][:ten_twenty] %></td>
+            <td><%= @user_stats[:xp_diff][:twenty_thirty] %></td>
+            <td><%= @user_stats[:xp_diff][:thirty_end] %></td>
+
+            <td><%= @user_stats[:cs_per_min][:zero_ten] %></td>
+            <td><%= @user_stats[:cs_per_min][:ten_twenty] %></td>
+            <td><%= @user_stats[:cs_per_min][:twenty_thirty] %></td>
+            <td><%= @user_stats[:cs_per_min][:thirty_end] %></td>
+
+            <td><%= @user_stats[:cs_diff][:zero_ten] %></td>
+            <td><%= @user_stats[:cs_diff][:ten_twenty] %></td>
+            <td><%= @user_stats[:cs_diff][:twenty_thirty] %></td>
+            <td><%= @user_stats[:cs_diff][:thirty_end] %></td>
+
+            <td><%= @user_stats[:gold_per_min][:zero_ten] %></td>
+            <td><%= @user_stats[:gold_per_min][:ten_twenty] %></td>
+            <td><%= @user_stats[:gold_per_min][:twenty_thirty] %></td>
+            <td><%= @user_stats[:gold_per_min][:thirty_end] %></td>
+
+            <td><%= @user_stats[:damage_taken_diff][:zero_ten] %></td>
+            <td><%= @user_stats[:damage_taken_diff][:ten_twenty] %></td>
+            <td><%= @user_stats[:damage_taken_diff][:twenty_thirty] %></td>
+            <td><%= @user_stats[:damage_taken_diff][:thirty_end] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

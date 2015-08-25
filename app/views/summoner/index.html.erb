@@ -1,2 +1,22 @@
-<h1>User</h1>
-<p>Find me in app/views/user/index.html.erb</p>
+<h1>LoLevation</h1>
+
+<%= form_tag("/summoner/search", method: "post", class: "form-horizontal") do %>
+  <div class="form-group">
+    <%= label_tag(:summoner_name, "Summoner Name", class: "col-sm-2 control-label") %>
+    <div class="col-sm-4">
+      <%= text_field_tag(:summoner_name, "", class: "form-control") %>
+    </div>
+    <div class="col-sm-3">
+      <%= select_tag(:champion_id, options_from_collection_for_select(Champion.all.order(:name), :champion_id, :name), class: "form-control") %>
+    </div>
+    <div class="col-sm-3">
+      <%= select_tag(:role, options_for_select([['Top', 'top'], ['Jungle', 'jungle'], ['Mid', 'mid'], ['ADC', 'adc'], ['Support', 'support']]), class: "form-control") %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= submit_tag("Submit", class: "btn btn-default") %>
+    </div>
+  </div>
+
+<% end %>

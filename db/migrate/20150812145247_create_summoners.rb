@@ -4,6 +4,7 @@ class CreateSummoners < ActiveRecord::Migration
       t.integer :summoner_id
       t.string :summoner_name
       t.datetime :last_checked
+      t.string :region
       t.string :tier
       t.string :division
 
