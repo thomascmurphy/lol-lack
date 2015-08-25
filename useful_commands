@@ -51,3 +51,7 @@ ps -u suffrage -o size,pid,user,command --sort -size | awk '{ hr=$1/1024 ; print
 0,10,20,30,40,50 * * * * /bin/bash -l -c 'cd /home/suffrage/webapps/lolevation/lolevation && RAILS_ENV=production GEM_HOME=/home/suffrage/webapps/lolevation/gems PATH=/home/suffrage/webapps/lolevation/bin:/usr/local/bin:$PATH bundle exec rake static_data:convert_game_data --silent'
 
 # End Whenever generated tasks for: /home/suffrage/webapps/lolevation/lolevation/config/schedule.rb
+
+
+ 'pkill -u suffrage' can be used to terminate ALL of your processes.
+ If you do not wish to kill all of you processes, you will need to use 'ps -aux' and find/kill all of the cron jobs manually.
