@@ -37,10 +37,12 @@ namespace :static_data do
   end
 
   task convert_game_data: :environment do
-    limit = Rails.env == 'production' ? 100000 : 400
-    matches = Match.where(processed: false).limit(limit)
-    matches.each do |match|
-      Delayed::Job.enqueue(MatchDataJob.new(match.id), run_at:MatchDataJob.queue_time())
+    if Delayed::Job.where("handler LIKE '%MatchDataJob%'").count() < 100
+      limit = Rails.env == 'production' ? 100 : 10
+      matches = Match.where(processed: false).limit(limit)
+      matches.each do |match|
+        Delayed::Job.enqueue(MatchDataJob.new(match.id), run_at:MatchDataJob.queue_time())
+      end
     end
   end
 
