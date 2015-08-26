@@ -45,13 +45,13 @@ class SummonerController < ApplicationController
                                                             role: lane_role[:role])
         @user_stats = ChampionMatch.average_values(user_games)
 
-        only_wins = params[:only_wins] == "false" ? false : true
+        @only_wins = params[:only_wins] == "false" ? false : true
         @tier = params[:tier].presence || @summoner.next_tier()
         comparison_games = ChampionMatch.where(champion_id: champion_id,
                                                lane: lane_role[:lane],
                                                role: lane_role[:role],
                                                tier: @tier,
-                                               winner: only_wins)
+                                               winner: @only_wins)
 
         @average_stats = ChampionMatch.average_values(comparison_games)
       else
