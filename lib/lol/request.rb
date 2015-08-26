@@ -1,7 +1,7 @@
 module Lol
   class NotFound < StandardError; end
   class TooManyRequests < StandardError; end
-  class InvalidCacheStore < StandardError; end
+  class InvalidAPIResponse < StandardError; end
 
   class Request
 
