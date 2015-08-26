@@ -6,7 +6,9 @@ class SummonerController < ApplicationController
     if params[:summoner_name].present?
       redirect_to summoner_path(summoner_name: params[:summoner_name],
                                 champion_id: params[:champion_id],
-                                role: params[:role])
+                                role: params[:role],
+                                tier: params[:tier],
+                                region: params[:region])
     else
       flash[:alert] = "Please enter a valid summoner name"
       redirect_to action: "index"
