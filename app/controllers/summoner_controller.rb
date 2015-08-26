@@ -39,7 +39,10 @@ class SummonerController < ApplicationController
 
         champion_id = params[:champion_id]
         lane_role = ChampionMatch.convertRole(params[:role])
-        query = {championIds: champion_id, rankedQueues: 'RANKED_SOLO_5x5'}
+        query = {championIds: champion_id,
+                 rankedQueues: 'RANKED_SOLO_5x5',
+                 beginIndex: 0, 
+                 endIndex: 10}
         user_games = @summoner.get_champion_matches(query).where(champion_id: champion_id,
                                                             lane: lane_role[:lane],
                                                             role: lane_role[:role])

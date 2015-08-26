@@ -23,7 +23,7 @@ module Lol
       if response.respond_to?(:code) && !(200...300).include?(response.code)
         raise NotFound.new("404 Not Found") if response.not_found?
         raise TooManyRequests.new('429 Rate limit exceeded') if response.code == 429
-        raise InvalidAPIResponse.new(@options)
+        raise InvalidAPIResponse.new(respose)
       end
       response
     end
