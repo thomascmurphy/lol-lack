@@ -39,8 +39,8 @@ class SummonerController < ApplicationController
 
         champion_id = params[:champion_id]
         lane_role = ChampionMatch.convertRole(params[:role])
-        query = {championIds: champion_id, rankedQueues: 'RANKED_SOLO_5x5'}
-        user_games = @summoner.get_champion_matches().where(champion_id: champion_id,
+        query = {championIds: champion_id, rankedQueues: 'RANKED_SOLO_5x5', beginIndex: 1, endIndex: 2}
+        user_games = @summoner.get_champion_matches(query).where(champion_id: champion_id,
                                                             lane: lane_role[:lane],
                                                             role: lane_role[:role])
         @user_stats = ChampionMatch.average_values(user_games)
@@ -61,6 +61,12 @@ class SummonerController < ApplicationController
 
     rescue Lol::TooManyRequests
       flash[:alert] = "We've reached our API limit :( , please try again in a few minutes."
+      redirect_to action: "index"
+    rescue Lol::NotFound
+      flash[:alert] = "Couldn't complete the request, make sure your summoner name  and region are entered correctly."
+      redirect_to action: "index"
+    rescue Lol::InvalidAPIResponse
+      flash[:alert] = "Invalid API Response"
       redirect_to action: "index"
     rescue Exception => e
       raise e
