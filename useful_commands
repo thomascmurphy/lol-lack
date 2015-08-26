@@ -10,6 +10,8 @@ bin/rails generate migration AddJobToSkills job:references
 if getting locked db error
 ActiveRecord::Base.connection.execute("BEGIN TRANSACTION; END;")
 
+RAILS_ENV=production bin/rake assets:precompile
+
 export GEM_HOME=$PWD/gems
 export RUBYLIB=$PWD/lib
 export PATH=$PWD/bin:$PATH

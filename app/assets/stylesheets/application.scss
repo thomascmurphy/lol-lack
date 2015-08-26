@@ -18,7 +18,7 @@
  @import "bootstrap-sprockets";
  @import "bootstrap";
 
- @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic|Montserrat:400,700);
+ @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic|Oswald:400,700);
 
 $background_light: #fffffa;
 $background_medium: #FFEA00;
@@ -48,7 +48,7 @@ $orange: #FF9800;
 $white: #FFFFFF;
 
 $font_stack: "Lato", sans-serif;
-$font_stack_alt: "Montserrat", sans-serif;
+$font_stack_alt: "Oswald", sans-serif;
 
 
 @mixin border-radius($radius) {
@@ -138,6 +138,51 @@ body{
 body:after{
     display:none;
     content: url(image_path('web/spinner.png'));
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-family: $font_stack;
+
+    .small, small{
+        color: $text_gray;
+    }
+}
+
+.alt_font, h1.alt_font, h2.alt_font, h3.alt_font, h4.alt_font, h5.alt_font, h6.alt_font, h1 .alt_font, h2 .alt_font, h3 .alt_font, h4 .alt_font, h5 .alt_font, h6 .alt_font{
+    font-family: $font_stack_alt;
+}
+
+.text-muted{
+    color: $text_gray;
+}
+
+
+.thin, h1.thin, h2.thin, h3.thin, h4.thin, h5.thin{
+    font-family: $font_stack;
+    font-weight: lighter;
+}
+
+.normal_weight, h1.normal_weight, h2.normal_weight, h3.normal_weight, h4.normal_weight, h5.normal_weight{
+    font-weight: normal;
+}
+
+.smaller{
+    font-size: 0.8em;
+    line-height: 1.375em;
+}
+
+a, a:active{
+    text-decoration: none;
+    color: $cyan;
+}
+
+a:hover{
+    text-decoration: none;
+    color: $cyan_dark;
+}
+
+a.row, a.block, img.block{
+    display: block;
 }
 
 .inline_block{
