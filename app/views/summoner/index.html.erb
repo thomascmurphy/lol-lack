@@ -1,21 +1,37 @@
-<h1>LoLevation</h1>
-
 <%= form_tag("/summoner/search", method: "post", class: "form-horizontal") do %>
   <div class="form-group">
-    <%= label_tag(:summoner_name, "Summoner Name", class: "col-sm-2 control-label") %>
-    <div class="col-sm-4">
-      <%= text_field_tag(:summoner_name, "", class: "form-control") %>
+    <div class="col-sm-3">
+      <%= text_field_tag(:summoner_name, "", class: "form-control", placeholder: "Summoner Name") %>
     </div>
     <div class="col-sm-3">
-      <%= select_tag(:champion_id, options_from_collection_for_select(Champion.all.order(:name), :champion_id, :name), class: "form-control") %>
+      <%= select_tag(:champion_id,
+                     options_from_collection_for_select(Champion.all.order(:name), :champion_id, :name),
+                     class: "form-control",
+                     prompt: "Champion") %>
     </div>
-    <div class="col-sm-3">
-      <%= select_tag(:role, options_for_select([['Top', 'top'], ['Jungle', 'jungle'], ['Mid', 'mid'], ['ADC', 'adc'], ['Support', 'support']]), class: "form-control") %>
+    <div class="col-sm-2">
+      <%= select_tag(:role,
+                     options_for_select([['Top', 'top'], ['Jungle', 'jungle'], ['Mid', 'mid'], ['ADC', 'adc'], ['Support', 'support']]),
+                     class: "form-control",
+                     prompt: "Role") %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag(:tier,
+                     options_for_select([['Bronze', 'BRONZE'], ['Silver', 'SILVER'], ['Gold', 'GOLD'],
+                                         ['Platinum', 'PLATINUM'], ['Master', 'MASTER'], ['Challenger', 'CHALLENGER']]),
+                     class: "form-control",
+                     prompt: "Tier") %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag(:region,
+                     options_for_select([['NA', 'na'], ['EUW', 'euw'], ['EUNE', 'eune'], ['KR', 'kr'],
+                                         ['OCE', 'oce'], ['BR', 'br'], ['LAN', 'lan'], ['RU', 'ru'], ['TR', 'tr']]),
+                     class: "form-control") %>
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= submit_tag("Submit", class: "btn btn-default") %>
+    <div class="col-sm-offset-4 col-sm-4">
+      <%= submit_tag("Submit", class: "btn btn-primary btn-block btn-lg") %>
     </div>
   </div>
 

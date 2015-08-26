@@ -7,6 +7,9 @@ class SummonerController < ApplicationController
       redirect_to summoner_path(summoner_name: params[:summoner_name],
                                 champion_id: params[:champion_id],
                                 role: params[:role])
+    else
+      flash[:alert] = "Please enter a valid summoner name"
+      redirect_to action: "index"
     end
   end
 
@@ -47,6 +50,7 @@ class SummonerController < ApplicationController
 
       @average_stats = ChampionMatch.average_values(comparison_games)
     else
+      flash[:alert] = "Please enter a champion and role"
       redirect_to action: "index"
     end
   end

@@ -34,6 +34,11 @@
             <td><%= @average_stats[:total_damage_dealt_champs] %></td>
             <td><%= @average_stats[:total_damage_taken] %></td>
           </tr>
+        <% else %>
+          <tr>
+            <td><%= @tier.capitalize %></td>
+            <td colspan="6" class="text-center">Not Enough Data</td>
+          </tr>
         <% end %>
         <% if @user_stats %>
           <tr>
@@ -44,6 +49,11 @@
             <td><%= number_to_percentage(@user_stats[:first_blood_participation] * 100, precision: 1) %></td>
             <td><%= @user_stats[:total_damage_dealt_champs] %></td>
             <td><%= @user_stats[:total_damage_taken] %></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td><%= @summoner.summoner_name %></td>
+            <td colspan="6" class="text-center">Not Enough Data</td>
           </tr>
         <% end %>
       </tbody>
@@ -79,6 +89,11 @@
             <td><%= @average_stats[:monsters_team_jungle] %></td>
             <td><%= @average_stats[:monsters_enemy_jungle] %></td>
           </tr>
+        <% else %>
+          <tr>
+            <td><%= @tier.capitalize %></td>
+            <td colspan="7" class="text-center">Not Enough Data</td>
+          </tr>
         <% end %>
         <% if @user_stats %>
           <tr>
@@ -90,6 +105,11 @@
             <td><%= @user_stats[:team_baron_kills] %></td>
             <td><%= @user_stats[:monsters_team_jungle] %></td>
             <td><%= @user_stats[:monsters_enemy_jungle] %></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td><%= @summoner.summoner_name %></td>
+            <td colspan="7" class="text-center">Not Enough Data</td>
           </tr>
         <% end %>
       </tbody>
@@ -146,6 +166,11 @@
             <td><%= @average_stats[:damage_taken_diff][:twenty_thirty] %></td>
             <td><%= @average_stats[:damage_taken_diff][:thirty_end] %></td>
           </tr>
+        <% else %>
+          <tr>
+            <td><%= @tier.capitalize %></td>
+            <td colspan="24" class="text-center">Not Enough Data</td>
+          </tr>
         <% end %>
         <% if @user_stats %>
           <tr>
@@ -179,6 +204,11 @@
             <td><%= @user_stats[:damage_taken_diff][:ten_twenty] %></td>
             <td><%= @user_stats[:damage_taken_diff][:twenty_thirty] %></td>
             <td><%= @user_stats[:damage_taken_diff][:thirty_end] %></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td><%= @summoner.summoner_name %></td>
+            <td colspan="24" class="text-center">Not Enough Data</td>
           </tr>
         <% end %>
       </tbody>

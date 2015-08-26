@@ -7,19 +7,48 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-  <div class="container<% if @wide_content %>-fluid<% end %>">
+  <div id="header_area">
+    <div class="container">
       <div class="row">
         <div class="col-xs-12">
-          <% if notice %>
-            <div class="alert alert-info" role="alert"><%= notice %></div>
-          <% end %>
-          <% if alert %>
-            <div class="alert alert-danger" role="alert"><%= alert %></div>
-          <% end %>
+          <%= image_tag("lolevation_logo.png", id: "logo", class: "valign_middle") %>
+          <h1 id="site_title" class="inline_block valign_middle"><big>LoLevation</big></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="notice_area">
+    <% if notice %>
+      <div class="alert alert-info" role="alert">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <%= notice %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if alert %>
+      <div class="alert alert-danger" role="alert">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <%= alert %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div id="content_area">
+    <div class="container<% if @wide_content %>-fluid<% end %>">
+        <div class="row">
+          <div class="col-xs-12">
 
-          <%= yield %>
+            <%= yield %>
 
+          </div>
         </div>
       </div>
     </div>

@@ -17,3 +17,331 @@
  // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
  @import "bootstrap-sprockets";
  @import "bootstrap";
+
+ @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic|Montserrat:400,700);
+
+$background_light: #fffffa;
+$background_medium: #FFEA00;
+$background_dark: #4CAF50;
+
+$divider_color: rgba(0, 0, 0, 0.12);
+$divider_color_light: rgba(255, 255, 255, 0.8);
+
+$text_dark: rgba(0, 0, 0, 0.87);
+$text_medium: rgba(0, 0, 0, 0.54);
+$text_light: rgba(0, 0, 0, 0.26);
+$text_lighter: rgba(0, 0, 0, 0.12);
+$text_gray: #a8a9ab;
+$text_protect_light: rgba(255, 255, 255, 0.7);
+
+$shader_dark: rgba(24, 47, 25, 0.9);
+$shader: rgba(24, 47, 25, 0.8);
+$shader_light: rgba(24, 47, 25, 0.4);
+$shader_hover: rgba(24, 47, 25, 0.1);
+$shader_black: rgba(0, 0, 0, 0.5);
+$shader_white: rgba(255, 255, 255, 0.8);
+$shader_white_light: rgba(255, 255, 255, 0.2);
+
+$cyan: #00BCD4;
+$cyan_dark: #0097A7;
+$orange: #FF9800;
+$white: #FFFFFF;
+
+$font_stack: "Lato", sans-serif;
+$font_stack_alt: "Montserrat", sans-serif;
+
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin box-shadow($x_offset, $y_offset, $blur, $color){
+    box-shadow: $x_offset $y_offset $blur $color;
+    -webkit-box-shadow: $x_offset $y_offset $blur $color;
+    -moz-box-shadow: $x_offset $y_offset $blur $color;
+}
+
+
+/* ============ Animations */
+
+
+@-moz-keyframes spinnerRotate {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spinnerRotate {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spinnerRotate {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+
+/* ============ Material Design Aspects */
+
+
+.z_depth_1{
+    @include box-shadow(0, 1px, 1px, rgba(0, 0, 0, 0.24));
+    z-index: 1;
+}
+
+.z_depth_2{
+    @include box-shadow(0, 3px, 3px, rgba(0, 0, 0, 0.24));
+    z-index: 2;
+}
+
+.z_depth_3{
+    @include box-shadow(0, 10px, 10px, rgba(0, 0, 0, 0.24));
+    z-index: 3;
+}
+
+.z_depth_4{
+    @include box-shadow(0, 14px, 14px, rgba(0, 0, 0, 0.24));
+    z-index: 4;
+}
+
+.z_depth_5{
+    @include box-shadow(0, 19px, 19px, rgba(0, 0, 0, 0.24));
+    z-index: 5;
+}
+
+
+
+/* ============ Bootstrap Elements */
+
+.btn-primary{
+    background-color: $cyan;
+    border-color: $cyan_dark;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+    background-color: $cyan_dark;
+    border-color: $cyan_dark;
+}
+
+
+
+/* ============ General Elements */
+body{
+    color: $text_dark;
+    background-color: $background_light;
+    font-family: $font_stack;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+body:after{
+    display:none;
+    content: url(image_path('web/spinner.png'));
+}
+
+.inline_block{
+    display: inline-block;
+}
+
+.float_none{
+    float: none;
+}
+
+.valign_middle{
+    vertical-align: middle;
+}
+
+.valign_bottom{
+    vertical-align: bottom;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.white, a.white:hover{
+    color: #fff;
+}
+
+.text_dark, a.text_dark:hover{
+    color: $text_dark;
+}
+
+.white_bg{
+    background-color: #fff;
+}
+
+.shader_bg{
+    background-color: $shader;
+}
+
+.medium_bg{
+    background-color: $background_medium;
+}
+
+a.shader_bg:hover{
+
+}
+
+.shader_light_bg{
+    background-color: $shader_light;
+    color: #fff;
+}
+
+a.shader_light_bg:hover{
+    background-color: $shader_white_light;
+}
+
+.shader_black_bg{
+    background-color: $shader_black;
+    color: #fff;
+}
+
+.no_margin{
+    margin: 0 !important;
+}
+
+.no_margin_top{
+    margin-top: 0 !important;
+}
+
+.no_margin_right{
+    margin-right: 0 !important;
+}
+
+.no_margin_bottom{
+    margin-bottom: 0 !important;
+}
+
+.no_margin_left{
+    margin-left: 0 !important;
+}
+
+.margin_all{
+    margin: 1em;
+}
+
+.margin_top{
+    margin-top: 1em;
+}
+
+.margin_right{
+    margin-right: 1em;
+}
+
+.margin_bottom{
+    margin-bottom: 1em;
+}
+
+.margin_left{
+    margin-left: 1em;
+}
+
+.large_margin_all{
+    margin: 2em;
+}
+
+.large_margin_top{
+    margin-top: 2em;
+}
+
+.large_margin_right{
+    margin-right: 2em;
+}
+
+.large_margin_bottom{
+    margin-bottom: 2em;
+}
+
+.large_margin_left{
+    margin-left: 2em;
+}
+
+.no_padding{
+    padding: 0 !important;
+}
+
+.no_padding_top{
+    padding-top: 0 !important;
+}
+
+.no_padding_right{
+    padding-right: 0 !important;
+}
+
+.no_padding_bottom{
+    padding-bottom: 0 !important;
+}
+
+.no_padding_left{
+    padding-left: 0 !important;
+}
+
+.loading:before{
+    content:"";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 500;
+    background-color: $shader_white;
+}
+
+.loading:after{
+  content:"";
+  display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -50px 0 0 -50px;
+	height: 100px;
+	width: 100px;
+	text-indent: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	-webkit-mask-image: image-url("spinner.png");
+	background-color: $cyan;
+	animation-name: spinnerRotate;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+
+	-moz-animation-name: spinnerRotate;
+	-moz-animation-duration: 2s;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-timing-function: linear;
+
+	-webkit-animation-name: spinnerRotate;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	z-index: 501;
+}
+
+
+
+
+/* ============ Header Area */
+
+#header_area{
+  background-color: $cyan;
+  border-bottom: 5px solid $cyan_dark;
+  padding: 20px 0;
+  color: $white;
+}
+
+#notice_area{
+  margin-bottom: 50px;
+}
+
+#logo{
+  max-height: 80px;
+  margin-right: 10px;
+}
+
+#site_title{
+  margin: 0px 10px;
+}
