@@ -43,7 +43,7 @@ class Match < ActiveRecord::Base
     lol_request = Lol::Request.new(region)
     user_games = lol_request.match_list(summoner_id, query)
     match_ids = []
-    if user_games.has_key?("matches")
+    if user_games.has_key?("matches") && user_games["matches"].present?
       user_games["matches"].each do |user_game|
         match = Match.find_or_create_by(match_id: user_game["matchId"], region: region)
         match_ids << match.id

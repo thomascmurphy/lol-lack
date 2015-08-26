@@ -24,8 +24,10 @@ class Summoner < ActiveRecord::Base
   def get_champion_matches(query={})
     matches = Match.grab_summoner_match_ids(self.summoner_id, self.region, query)
     champion_match_ids = []
-    matches.each do |match|
-      champion_match_ids += match.process_stats(false)
+    if matches.present?
+      matches.each do |match|
+        champion_match_ids += match.process_stats(false)
+      end
     end
     ChampionMatch.where(id: champion_match_ids, summoner_id: self.summoner_id)
   end
