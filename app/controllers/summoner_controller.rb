@@ -46,7 +46,7 @@ class SummonerController < ApplicationController
         @user_stats = ChampionMatch.average_values(user_games)
 
         only_wins = params[:only_wins] == "false" ? false : true
-        @tier = params[:tier] || @summoner.next_tier()
+        @tier = params[:tier].presence || @summoner.next_tier()
         comparison_games = ChampionMatch.where(champion_id: champion_id,
                                                lane: lane_role[:lane],
                                                role: lane_role[:role],
