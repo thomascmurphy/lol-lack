@@ -3,7 +3,7 @@
     <img src="<%= @champion.image %>" alt="<%= @champion.name %>" class="img-responsive"/>
   </div>
   <div class="col-xs-10">
-    <h1><%= @champion.name %> <small>(<%= @role %>)</small></h1>
+    <h1><%= @champion.name %> <small>(<%= @role.capitalize %>)</small></h1>
     <h4>Comparing <%= @summoner_name %>'s last <% if @user_stats %><%= @user_stats[:count] %><% else %>0<% end %> matches with
       <% if @average_stats %><%= @average_stats[:count] %><% else %>0<% end %> <%= @tier.capitalize %>-level matches</h4>
   </div>
