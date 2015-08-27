@@ -47,29 +47,29 @@ jQuery(function($){
     var line_data = [[
       {
         name: summoner_name + " 0-10",
-        value: $(this).data('user-value-0-10')
+        value: parseFloat($(this).data('user-value-0-10'))
       },{
         name: summoner_name + " 10-20",
-        value: $(this).data('user-value-10-20')
+        value: parseFloat($(this).data('user-value-10-20'))
       },{
         name: summoner_name + " 20-30",
-        value: $(this).data('user-value-20-30')
+        value: parseFloat($(this).data('user-value-20-30'))
       },{
         name: summoner_name + " 30-End",
-        value: $(this).data('user-value-30-end')
+        value: parseFloat($(this).data('user-value-30-end'))
       }],[
       {
         name: comparison_title + " 0-10",
-        value: $(this).data('comparison-value-0-10')
+        value: parseFloat($(this).data('comparison-value-0-10'))
       },{
         name: comparison_title + " 10-20",
-        value: $(this).data('comparison-value-10-20')
+        value: parseFloat($(this).data('comparison-value-10-20'))
       },{
         name: comparison_title + " 20-30",
-        value: $(this).data('comparison-value-20-30')
+        value: parseFloat($(this).data('comparison-value-20-30'))
       },{
         name: comparison_title + " 30-End",
-        value: $(this).data('comparison-value-30-end')
+        value: parseFloat($(this).data('comparison-value-30-end'))
       }
       ]
     ];
