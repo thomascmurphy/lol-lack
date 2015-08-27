@@ -1,4 +1,40 @@
-jQuery(function($){
+// accommodate Turbolinks
+$(document).on('ready page:change', function() {
+
+  var checkLocalStorage = function() {
+    return typeof(Storage) !== "undefined";
+  };
+
+  if ($('#summoner_form').length) {
+    if (checkLocalStorage()) {
+      var stored_names = [];
+      if (typeof(localStorage["lolevation_summoners"]) !== "undefined") {
+        stored_names = JSON.parse(localStorage["lolevation_summoners"]);
+        var button_text = "";
+        for (var i=0; i<stored_names.length; i++) {
+          var stored_name = stored_names[i];
+          var summoner_name_button = '<button type="button" class="btn btn-default btn-xs" tabindex="2">'+ stored_name +'</button>';
+          button_text += summoner_name_button + "\n";
+        }
+        $('#stored_summoner_names').html(button_text);
+      }
+
+      $('#summoner_form').submit(function() {
+        var summoner_name = $(this).find('input[name="summoner_name"]').val();
+        if (summoner_name) {
+          stored_names.unshift(summoner_name);
+        }
+        if (stored_names.length > 3) {
+          stored_names.pop();
+        }
+        localStorage["lolevation_summoners"] = JSON.stringify(stored_names);
+      });
+
+      $('#stored_summoner_names').on('click', 'button', function(){
+        $('#summoner_form input[name="summoner_name"]').val($(this).text()).focus();
+      });
+    }
+  }
 
   var donut_options = function(superior){
     var main_color = '#FF9800';
