@@ -18,8 +18,8 @@ jQuery(function($){
 
 
   $('.build_donut').each(function(){
-    var user_value = $(this).data('user-value');
-    var comparison_value = $(this).data('comparison-value');
+    var user_value = parseFloat($(this).data('user-value'));
+    var comparison_value = parseFloat($(this).data('comparison-value'));
     var donut_data = [{
       name: $(this).data('summoner-name'),
       value: user_value
