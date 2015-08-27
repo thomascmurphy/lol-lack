@@ -25,8 +25,7 @@ class Match < ActiveRecord::Base
           else
             champion_match_ids << existing_match.id
           end
-          if propogate && ChampionMatch.where(champion_id: participant_data["championId"], tier: participant_data["highestAchievedSeasonTier"]).count < 50
-                       && Match.where(processed: false).count() < 1000000
+          if propogate && ChampionMatch.where(champion_id: participant_data["championId"], tier: participant_data["highestAchievedSeasonTier"]).count < 50 && Match.where(processed: false).count() < 1000000
             query = {rankedQueues: 'RANKED_SOLO_5x5',
                      beginIndex: 0,
                      endIndex: 10}
