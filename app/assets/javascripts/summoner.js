@@ -30,7 +30,11 @@ jQuery(function($){
       goal_value_text: $(this).data('comparison-title'),
       number_decorator: $(this).data('number-decorator')
     };
-    $(this).drawDonut(donut_data, $.extend(specific_donut_options, donut_options(user_value > comparison_value)));
+    var superior = user_value >= comparison_value;
+    if ($(this).data('inverse-superiority')) {
+      superior = user_value <= comparison_value;
+    }
+    $(this).drawDonut(donut_data, $.extend(specific_donut_options, donut_options(superior)));
   });
 
   var line_options = {

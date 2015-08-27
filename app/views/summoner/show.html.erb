@@ -87,7 +87,8 @@
                              data-chart-title="Death Participation"
                              data-summoner-name="<%= @summoner.summoner_name %>"
                              data-comparison-title="<%= @tier.capitalize %>"
-                             data-number-decorator="%"></div>
+                             data-number-decorator="%"
+                             data-inverse-superiority="true"></div>
   </div>
   <div class="col-sm-3">
     <div class="build_donut" <% if @user_stats %>
@@ -192,7 +193,7 @@
                              <% if @average_stats %>
                              data-comparison-value="<%= @average_stats[:team_baron_kills] %>"
                              <% else %>
-                             data-comparison-value="1"
+                             data-comparison-value="0"
                              <% end %>
                              data-chart-title="Barons"
                              data-summoner-name="<%= @summoner.summoner_name %>"
