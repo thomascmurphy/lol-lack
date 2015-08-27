@@ -1,13 +1,21 @@
 jQuery(function($){
 
-  var donut_options = {
-    colors: [
-      '#00BCD4',
-      '#FF9800'],
-    donut_thickness: '10%',
-    full_donut: false,
-    rounded: true
+  var donut_options = function(superior){
+    var main_color = '#FF9800';
+    if (superior) {
+      main_color = '#00BCD4';
+    }
+    var return_options = {
+      colors: [
+        main_color,
+        '#EFEFEF'],
+      donut_thickness: '10%',
+      full_donut: false,
+      rounded: true
+    };
+    return return_options;
   };
+
 
   $('.build_donut').each(function(){
     var user_value = $(this).data('user-value');
@@ -22,8 +30,16 @@ jQuery(function($){
       goal_value_text: $(this).data('comparison-title'),
       number_decorator: $(this).data('number-decorator')
     };
-    $(this).drawDonut(donut_data, $.extend(specific_donut_options, donut_options));
+    $(this).drawDonut(donut_data, $.extend(specific_donut_options, donut_options(user_value > comparison_value)));
   });
+
+  var line_options = {
+      colors: [
+          '#00BCD4',
+          '#FF9800'],
+      has_key: false,
+      hover: true
+  };
 
   $('.build_line').each(function(){
     var summoner_name = $(this).data('summoner-name');
@@ -58,46 +74,10 @@ jQuery(function($){
       ]
     ];
     var specific_line_options = {
-      title: $(this).data('chart-title'),
-      hover: true
+      title: $(this).data('chart-title')
     };
-    $(this).drawLine(line_data, $.extend(specific_line_options, donut_options));
+    $(this).drawLine(line_data, $.extend(specific_line_options, line_options));
   });
 
-
-var line_values = [
-    [{
-        name: 'Item 1',
-        value: 2,
-        tooltip_value: ['CSS', 'HTML']
-    }, {
-        name: 'Item 2',
-        value: 3,
-        tooltip_value: ['Python']
-    }, {
-        name: 'Item 3',
-        value: 5,
-        tooltip_value: ['Ruby', 'SQL']
-    }, {
-        name: 'Item 4',
-        value: 7,
-        tooltip_value: ['PostGreSQL', 'JQuery']
-    }, {
-        name: 'Item 5',
-        value: 10,
-        tooltip_value: ['Mongo', 'HTML', 'Rails']
-    }]
-];
-
-var line_options = {
-    colors: [
-        '#4CAF50',
-        '#FBC02D'],
-    has_key: false,
-    hover: true,
-    title: 'Job Timeline'
-};
-
-$('#line_chart').drawLine(line_values, line_options);
 
 });

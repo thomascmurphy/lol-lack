@@ -117,6 +117,7 @@ class ChampionMatch < ActiveRecord::Base
       monsters_enemy_jungle = matches.average('monsters_enemy_jungle')
       team_dragon_kills = matches.average('team_dragon_kills')
       team_baron_kills = matches.average('team_baron_kills')
+      total_cs = matches.average('total_cs')
 
       xp_per_min = {zero_ten: (matches.average('xp_per_min_0_10') || 0).round(2).to_f,
                     ten_twenty: (matches.average('xp_per_min_10_20') || 0).round(2).to_f,
@@ -157,6 +158,7 @@ class ChampionMatch < ActiveRecord::Base
        monsters_enemy_jungle: monsters_enemy_jungle.round(2).to_f,
        team_dragon_kills: team_dragon_kills.round(2).to_f,
        team_baron_kills: team_baron_kills.round(2).to_f,
+       total_cs: total_cs.round(2).to_f,
        xp_per_min: xp_per_min,
        xp_diff: xp_diff,
        cs_per_min: cs_per_min,

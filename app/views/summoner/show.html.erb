@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row large_margin_bottom">
   <div class="col-xs-2">
     <img src="<%= @champion.image %>" alt="<%= @champion.name %>" class="img-responsive"/>
   </div>
@@ -8,130 +8,197 @@
       <% if @average_stats %><%= @average_stats[:count] %><% else %>0<% end %> <%= @tier.capitalize %>-level <% if @only_wins %>victorious <% end %>matches</h4>
   </div>
 </div>
-<div class="row">
-  <div class="col-xs-12">
-    <h2>Kills</h2>
-
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="build_donut" <% if @user_stats %>
-                                 data-user-value="<%= @user_stats[:kda] %>"
-                                 <% else %>
-                                 data-user-value="0"
-                                 <% end %>
-                                 <% if @average_stats %>
-                                 data-comparison-value="<%= @average_stats[:kda] %>"
-                                 <% else %>
-                                 data-comparison-value="0"
-                                 <% end %>
-                                 data-chart-title="KDA"
-                                 data-summoner-name="<%= @summoner.summoner_name %>"
-                                 data-comparison-title="<%= @tier.capitalize %>"></div>
-      </div>
-      <div class="col-sm-3">
-        <div class="build_donut" <% if @user_stats %>
-                                 data-user-value="<%= number_with_precision(@user_stats[:kill_participation] * 100, precision: 1) %>"
-                                 <% else %>
-                                 data-user-value="0"
-                                 <% end %>
-                                 <% if @average_stats %>
-                                 data-comparison-value="<%= number_with_precision(@average_stats[:kill_participation] * 100, precision: 1) %>"
-                                 <% else %>
-                                 data-comparison-value="0"
-                                 <% end %>
-                                 data-chart-title="Kill Participation"
-                                 data-summoner-name="<%= @summoner.summoner_name %>"
-                                 data-comparison-title="<%= @tier.capitalize %>"
-                                 data-number-decorator="%"></div>
-      </div>
-      <div class="col-sm-3">
-        <div class="build_donut" <% if @user_stats %>
-                                 data-user-value="<%= number_with_precision(@user_stats[:death_participation] * 100, precision: 1) %>"
-                                 <% else %>
-                                 data-user-value="0"
-                                 <% end %>
-                                 <% if @average_stats %>
-                                 data-comparison-value="<%= number_with_precision(@average_stats[:death_participation] * 100, precision: 1) %>"
-                                 <% else %>
-                                 data-comparison-value="0"
-                                 <% end %>
-                                 data-chart-title="Death Participation"
-                                 data-summoner-name="<%= @summoner.summoner_name %>"
-                                 data-comparison-title="<%= @tier.capitalize %>"
-                                 data-number-decorator="%"></div>
-      </div>
-      <div class="col-sm-3">
-        <div class="build_donut" <% if @user_stats %>
-                                 data-user-value="<%= @user_stats[:total_damage_dealt_champs]/@user_stats[:total_damage_taken] %>"
-                                 <% else %>
-                                 data-user-value="0"
-                                 <% end %>
-                                 <% if @average_stats %>
-                                 data-comparison-value="<%= @average_stats[:total_damage_dealt_champs]/@average_stats[:total_damage_taken] %>"
-                                 <% else %>
-                                 data-comparison-value="0"
-                                 <% end %>
-                                 data-chart-title="Champ Damage/Taken"
-                                 data-summoner-name="<%= @summoner.summoner_name %>"
-                                 data-comparison-title="<%= @tier.capitalize %>"></div>
-      </div>
-    </div>
+<div class="row large_margin_bottom">
+  <div class="col-sm-4">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= @user_stats[:kda] %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= @average_stats[:kda] %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="KDA"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"></div>
+  </div>
+  <div class="col-sm-4">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= number_with_precision(@user_stats[:kill_participation] * 100, precision: 1) %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= number_with_precision(@average_stats[:kill_participation] * 100, precision: 1) %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Kill Participation"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"
+                             data-number-decorator="%"></div>
+  </div>
+  <div class="col-sm-4">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= number_with_precision(60 * @user_stats[:total_cs] / @user_stats[:duration], precision: 1) %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= number_with_precision(60 * @average_stats[:total_cs] / @average_stats[:duration], precision: 1) %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="CS/min"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"></div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-12">
-    <h2>Objectives</h2>
-    <table class="table table-bordered table-condensed">
-      <thead>
-        <tr>
-          <th>Source</th>
-          <th>Structure Participation</th>
-          <th>Wards Placed</th>
-          <th>Wards Killed</th>
-          <th>Dragons</th>
-          <th>Barons</th>
-          <th>Team Jungle Camps</th>
-          <th>Enemy Jungle Camps</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if @average_stats %>
-          <tr>
-            <td><%= @tier.capitalize %></td>
-            <td><%= number_to_percentage(@average_stats[:structure_participation] * 100, precision: 1) %></td>
-            <td><%= @average_stats[:wards_placed] %></td>
-            <td><%= @average_stats[:wards_killed] %></td>
-            <td><%= @average_stats[:team_dragon_kills] %></td>
-            <td><%= @average_stats[:team_baron_kills] %></td>
-            <td><%= @average_stats[:monsters_team_jungle] %></td>
-            <td><%= @average_stats[:monsters_enemy_jungle] %></td>
-          </tr>
-        <% else %>
-          <tr>
-            <td><%= @tier.capitalize %></td>
-            <td colspan="7" class="text-center">Not Enough Data</td>
-          </tr>
-        <% end %>
-        <% if @user_stats %>
-          <tr>
-            <td><%= @summoner.summoner_name %></td>
-            <td><%= number_to_percentage(@user_stats[:structure_participation] * 100, precision: 1) %></td>
-            <td><%= @user_stats[:wards_placed] %></td>
-            <td><%= @user_stats[:wards_killed] %></td>
-            <td><%= @user_stats[:team_dragon_kills] %></td>
-            <td><%= @user_stats[:team_baron_kills] %></td>
-            <td><%= @user_stats[:monsters_team_jungle] %></td>
-            <td><%= @user_stats[:monsters_enemy_jungle] %></td>
-          </tr>
-        <% else %>
-          <tr>
-            <td><%= @summoner.summoner_name %></td>
-            <td colspan="7" class="text-center">Not Enough Data</td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+<div class="row large_margin_bottom">
+  <!-- <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= @user_stats[:total_damage_dealt_champs]/@user_stats[:total_damage_taken] %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= @average_stats[:total_damage_dealt_champs]/@average_stats[:total_damage_taken] %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Champ Damage/Taken"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"></div>
+  </div> -->
+  <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= number_with_precision(@user_stats[:death_participation] * 100, precision: 1) %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= number_with_precision(@average_stats[:death_participation] * 100, precision: 1) %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Death Participation"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"
+                             data-number-decorator="%"></div>
+  </div>
+  <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= number_with_precision(@user_stats[:structure_participation] * 100, precision: 1) %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= number_with_precision(@average_stats[:structure_participation] * 100, precision: 1) %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Structure Participation"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"
+                             data-number-decorator="%"></div>
+  </div>
+  <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= @user_stats[:wards_placed] %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= @average_stats[:wards_placed] %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Wards Placed"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"></div>
+  </div>
+  <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= @user_stats[:wards_killed] %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= @average_stats[:wards_killed] %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Wards Killed"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"></div>
+  </div>
+</div>
+
+<div class="row large_margin_bottom">
+  <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= @user_stats[:monsters_team_jungle] %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= @average_stats[:monsters_team_jungle] %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Team Jungle Camps"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"
+                             data-number-decorator="%"></div>
+  </div>
+  <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= @user_stats[:monsters_enemy_jungle] %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= @average_stats[:monsters_enemy_jungle] %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Enemy Jungle Camps"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"
+                             data-number-decorator="%"></div>
+  </div>
+  <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= @user_stats[:team_dragon_kills] %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= @average_stats[:team_dragon_kills] %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Dragons"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"></div>
+  </div>
+  <div class="col-sm-3">
+    <div class="build_donut" <% if @user_stats %>
+                             data-user-value="<%= @user_stats[:team_baron_kills] %>"
+                             <% else %>
+                             data-user-value="0"
+                             <% end %>
+                             <% if @average_stats %>
+                             data-comparison-value="<%= @average_stats[:team_baron_kills] %>"
+                             <% else %>
+                             data-comparison-value="0"
+                             <% end %>
+                             data-chart-title="Barons"
+                             data-summoner-name="<%= @summoner.summoner_name %>"
+                             data-comparison-title="<%= @tier.capitalize %>"></div>
   </div>
 </div>
 
