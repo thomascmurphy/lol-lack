@@ -31,8 +31,9 @@ namespace :static_data do
     #25850956 = Nightblue3 (master)
     #65409090 = GodPiglet (challenger)
     summoner_ids = [60263441, 19522880, 53884466, 40308699, 39567812, 25850956, 65409090]
+    query = {rankedQueues: 'RANKED_SOLO_5x5'}
     summoner_ids.each do |summoner_id|
-      Match.grab_summoner_match_ids(summoner_id, 'na')
+      Match.grab_summoner_match_ids(summoner_id, 'na', query)
     end
   end
 
