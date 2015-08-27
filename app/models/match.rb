@@ -27,7 +27,10 @@ class Match < ActiveRecord::Base
           end
           if propogate && ChampionMatch.where(champion_id: participant_data["championId"], tier: participant_data["highestAchievedSeasonTier"]).count < 50
                        && Match.where(processed: false).count() < 1000000
-            matches = self.class.grab_summoner_match_ids(summoner_id, self.region)
+            query = {rankedQueues: 'RANKED_SOLO_5x5',
+                     beginIndex: 0,
+                     endIndex: 10}
+            matches = self.class.grab_summoner_match_ids(summoner_id, self.region, query)
           end
         end
         self.processed = true
