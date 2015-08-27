@@ -1266,22 +1266,29 @@ if(!full_donut){
     var area_width = width - 2 * dot_radius;
     var area_height = hover && !title ? height : height - 10;
     var max_point_height = area_height - 10;
-    var data_max = 1 + height_adjustment;
+    var data_max = 1;
+    var data_min = 0;
 
     for(var j=0; j<data.length; j++) {
       for(var i=0; i<data[j].length; i++){
-        if(data[j][i].value + height_adjustment > data_max){
-          data_max = data[j][i].value + height_adjustment;
+        if(data[j][i].value  > data_max){
+          data_max = data[j][i].value;
+        }
+        if(data[j][i].value < data_min){
+          data_min = data[j][i].value;
         }
       }
     }
+    height_adjustment = Math.max((-1*data_min), height_adjustment);
+    data_max = data_max + height_adjustment;
+    data_min = data_min + height_adjustment;
+    var dots = [];
 
     for(var j=0; j<data.length; j++) {
       var point_spacing = data[j].length > 1 ? area_width / (data[j].length - 1) : area_width,
           start_x = (width - area_width)/2,
           start_y = area_height,
           coords = [],
-          dots = [],
           color = colors[j];
 
       for(var i=0; i<data[j].length; i++){
@@ -1337,9 +1344,9 @@ if(!full_donut){
                               });
       svg.append(fill_path);
       svg.append(line_path);
-      for (k=0; k<dots.length; k++){
-        svg.append(dots[k]);
-      }
+    }
+    for (k=0; k<dots.length; k++){
+      svg.append(dots[k]);
     }
 
 
@@ -1350,7 +1357,7 @@ if(!full_donut){
                                   y: height - 2,
                                   fill: secondary_text_color,
                                   'text-anchor': 'middle',
-                                  class:'key_text'
+                                  class:'key_text large'
                                 }, title);
     }
 

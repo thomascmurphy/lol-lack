@@ -138,98 +138,173 @@
 <div class="row">
   <div class="col-xs-12">
     <h2>Income</h2>
-    <table class="table table-bordered table-condensed">
-      <thead>
-        <tr>
-          <th>Source</th>
-          <th colspan="4">XP/min</th>
-          <th colspan="4">XP/min Diff</th>
-          <th colspan="4">CS/min</th>
-          <th colspan="4">CS/min Diff</th>
-          <th colspan="4">Gold/min</th>
-          <th colspan="4">Damage Taken Diff</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if @average_stats %>
-          <tr>
-            <td><%= @tier.capitalize %></td>
-            <td><%= @average_stats[:xp_per_min][:zero_ten] %></td>
-            <td><%= @average_stats[:xp_per_min][:ten_twenty] %></td>
-            <td><%= @average_stats[:xp_per_min][:twenty_thirty] %></td>
-            <td><%= @average_stats[:xp_per_min][:thirty_end] %></td>
 
-            <td><%= @average_stats[:xp_diff][:zero_ten] %></td>
-            <td><%= @average_stats[:xp_diff][:ten_twenty] %></td>
-            <td><%= @average_stats[:xp_diff][:twenty_thirty] %></td>
-            <td><%= @average_stats[:xp_diff][:thirty_end] %></td>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="build_line" <% if @user_stats %>
+                                 data-user-value-0-10="<%= @user_stats[:cs_per_min][:zero_ten] %>"
+                                 data-user-value-10-20="<%= @user_stats[:cs_per_min][:ten_twenty] %>"
+                                 data-user-value-20-30="<%= @user_stats[:cs_per_min][:twenty_thirty] %>"
+                                 data-user-value-30-end="<%= @user_stats[:cs_per_min][:thirty_end] %>"
+                                 <% else %>
+                                 data-user-value-0-10="0"
+                                 data-user-value-10-20="0"
+                                 data-user-value-20-30="0"
+                                 data-user-value-30-end="0"
+                                 <% end %>
+                                 <% if @average_stats %>
+                                 data-comparison-value-0-10="<%= @average_stats[:cs_per_min][:zero_ten] %>"
+                                 data-comparison-value-10-20="<%= @average_stats[:cs_per_min][:ten_twenty] %>"
+                                 data-comparison-value-20-30="<%= @average_stats[:cs_per_min][:twenty_thirty] %>"
+                                 data-comparison-value-30-end="<%= @average_stats[:cs_per_min][:thirty_end] %>"
+                                 <% else %>
+                                 data-comparison-value-0-10="0"
+                                 data-comparison-value-10-20="0"
+                                 data-comparison-value-20-30="0"
+                                 data-comparison-value-30-end="0"
+                                 <% end %>
+                                 data-chart-title="CS/min"
+                                 data-summoner-name="<%= @summoner.summoner_name %>"
+                                 data-comparison-title="<%= @tier.capitalize %>"></div>
+      </div>
+      <div class="col-sm-4">
+        <div class="build_line" <% if @user_stats %>
+                                 data-user-value-0-10="<%= @user_stats[:cs_diff][:zero_ten] %>"
+                                 data-user-value-10-20="<%= @user_stats[:cs_diff][:ten_twenty] %>"
+                                 data-user-value-20-30="<%= @user_stats[:cs_diff][:twenty_thirty] %>"
+                                 data-user-value-30-end="<%= @user_stats[:cs_diff][:thirty_end] %>"
+                                 <% else %>
+                                 data-user-value-0-10="0"
+                                 data-user-value-10-20="0"
+                                 data-user-value-20-30="0"
+                                 data-user-value-30-end="0"
+                                 <% end %>
+                                 <% if @average_stats %>
+                                 data-comparison-value-0-10="<%= @average_stats[:cs_diff][:zero_ten] %>"
+                                 data-comparison-value-10-20="<%= @average_stats[:cs_diff][:ten_twenty] %>"
+                                 data-comparison-value-20-30="<%= @average_stats[:cs_diff][:twenty_thirty] %>"
+                                 data-comparison-value-30-end="<%= @average_stats[:cs_diff][:thirty_end] %>"
+                                 <% else %>
+                                 data-comparison-value-0-10="0"
+                                 data-comparison-value-10-20="0"
+                                 data-comparison-value-20-30="0"
+                                 data-comparison-value-30-end="0"
+                                 <% end %>
+                                 data-chart-title="CS/min Diff"
+                                 data-summoner-name="<%= @summoner.summoner_name %>"
+                                 data-comparison-title="<%= @tier.capitalize %>"></div>
+      </div>
+      <div class="col-sm-4">
+        <div class="build_line" <% if @user_stats %>
+                                 data-user-value-0-10="<%= @user_stats[:gold_per_min][:zero_ten] %>"
+                                 data-user-value-10-20="<%= @user_stats[:gold_per_min][:ten_twenty] %>"
+                                 data-user-value-20-30="<%= @user_stats[:gold_per_min][:twenty_thirty] %>"
+                                 data-user-value-30-end="<%= @user_stats[:gold_per_min][:thirty_end] %>"
+                                 <% else %>
+                                 data-user-value-0-10="0"
+                                 data-user-value-10-20="0"
+                                 data-user-value-20-30="0"
+                                 data-user-value-30-end="0"
+                                 <% end %>
+                                 <% if @average_stats %>
+                                 data-comparison-value-0-10="<%= @average_stats[:gold_per_min][:zero_ten] %>"
+                                 data-comparison-value-10-20="<%= @average_stats[:gold_per_min][:ten_twenty] %>"
+                                 data-comparison-value-20-30="<%= @average_stats[:gold_per_min][:twenty_thirty] %>"
+                                 data-comparison-value-30-end="<%= @average_stats[:gold_per_min][:thirty_end] %>"
+                                 <% else %>
+                                 data-comparison-value-0-10="0"
+                                 data-comparison-value-10-20="0"
+                                 data-comparison-value-20-30="0"
+                                 data-comparison-value-30-end="0"
+                                 <% end %>
+                                 data-chart-title="Gold/min"
+                                 data-summoner-name="<%= @summoner.summoner_name %>"
+                                 data-comparison-title="<%= @tier.capitalize %>"></div>
+      </div>
+    </div>
 
-            <td><%= @average_stats[:cs_per_min][:zero_ten] %></td>
-            <td><%= @average_stats[:cs_per_min][:ten_twenty] %></td>
-            <td><%= @average_stats[:cs_per_min][:twenty_thirty] %></td>
-            <td><%= @average_stats[:cs_per_min][:thirty_end] %></td>
-
-            <td><%= @average_stats[:cs_diff][:zero_ten] %></td>
-            <td><%= @average_stats[:cs_diff][:ten_twenty] %></td>
-            <td><%= @average_stats[:cs_diff][:twenty_thirty] %></td>
-            <td><%= @average_stats[:cs_diff][:thirty_end] %></td>
-
-            <td><%= @average_stats[:gold_per_min][:zero_ten] %></td>
-            <td><%= @average_stats[:gold_per_min][:ten_twenty] %></td>
-            <td><%= @average_stats[:gold_per_min][:twenty_thirty] %></td>
-            <td><%= @average_stats[:gold_per_min][:thirty_end] %></td>
-
-            <td><%= @average_stats[:damage_taken_diff][:zero_ten] %></td>
-            <td><%= @average_stats[:damage_taken_diff][:ten_twenty] %></td>
-            <td><%= @average_stats[:damage_taken_diff][:twenty_thirty] %></td>
-            <td><%= @average_stats[:damage_taken_diff][:thirty_end] %></td>
-          </tr>
-        <% else %>
-          <tr>
-            <td><%= @tier.capitalize %></td>
-            <td colspan="24" class="text-center">Not Enough Data</td>
-          </tr>
-        <% end %>
-        <% if @user_stats %>
-          <tr>
-            <td><%= @summoner.summoner_name %></td>
-            <td><%= @user_stats[:xp_per_min][:zero_ten] %></td>
-            <td><%= @user_stats[:xp_per_min][:ten_twenty] %></td>
-            <td><%= @user_stats[:xp_per_min][:twenty_thirty] %></td>
-            <td><%= @user_stats[:xp_per_min][:thirty_end] %></td>
-
-            <td><%= @user_stats[:xp_diff][:zero_ten] %></td>
-            <td><%= @user_stats[:xp_diff][:ten_twenty] %></td>
-            <td><%= @user_stats[:xp_diff][:twenty_thirty] %></td>
-            <td><%= @user_stats[:xp_diff][:thirty_end] %></td>
-
-            <td><%= @user_stats[:cs_per_min][:zero_ten] %></td>
-            <td><%= @user_stats[:cs_per_min][:ten_twenty] %></td>
-            <td><%= @user_stats[:cs_per_min][:twenty_thirty] %></td>
-            <td><%= @user_stats[:cs_per_min][:thirty_end] %></td>
-
-            <td><%= @user_stats[:cs_diff][:zero_ten] %></td>
-            <td><%= @user_stats[:cs_diff][:ten_twenty] %></td>
-            <td><%= @user_stats[:cs_diff][:twenty_thirty] %></td>
-            <td><%= @user_stats[:cs_diff][:thirty_end] %></td>
-
-            <td><%= @user_stats[:gold_per_min][:zero_ten] %></td>
-            <td><%= @user_stats[:gold_per_min][:ten_twenty] %></td>
-            <td><%= @user_stats[:gold_per_min][:twenty_thirty] %></td>
-            <td><%= @user_stats[:gold_per_min][:thirty_end] %></td>
-
-            <td><%= @user_stats[:damage_taken_diff][:zero_ten] %></td>
-            <td><%= @user_stats[:damage_taken_diff][:ten_twenty] %></td>
-            <td><%= @user_stats[:damage_taken_diff][:twenty_thirty] %></td>
-            <td><%= @user_stats[:damage_taken_diff][:thirty_end] %></td>
-          </tr>
-        <% else %>
-          <tr>
-            <td><%= @summoner.summoner_name %></td>
-            <td colspan="24" class="text-center">Not Enough Data</td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="build_line" <% if @user_stats %>
+                                 data-user-value-0-10="<%= @user_stats[:xp_per_min][:zero_ten] %>"
+                                 data-user-value-10-20="<%= @user_stats[:xp_per_min][:ten_twenty] %>"
+                                 data-user-value-20-30="<%= @user_stats[:xp_per_min][:twenty_thirty] %>"
+                                 data-user-value-30-end="<%= @user_stats[:xp_per_min][:thirty_end] %>"
+                                 <% else %>
+                                 data-user-value-0-10="0"
+                                 data-user-value-10-20="0"
+                                 data-user-value-20-30="0"
+                                 data-user-value-30-end="0"
+                                 <% end %>
+                                 <% if @average_stats %>
+                                 data-comparison-value-0-10="<%= @average_stats[:xp_per_min][:zero_ten] %>"
+                                 data-comparison-value-10-20="<%= @average_stats[:xp_per_min][:ten_twenty] %>"
+                                 data-comparison-value-20-30="<%= @average_stats[:xp_per_min][:twenty_thirty] %>"
+                                 data-comparison-value-30-end="<%= @average_stats[:xp_per_min][:thirty_end] %>"
+                                 <% else %>
+                                 data-comparison-value-0-10="0"
+                                 data-comparison-value-10-20="0"
+                                 data-comparison-value-20-30="0"
+                                 data-comparison-value-30-end="0"
+                                 <% end %>
+                                 data-chart-title="XP/min"
+                                 data-summoner-name="<%= @summoner.summoner_name %>"
+                                 data-comparison-title="<%= @tier.capitalize %>"></div>
+      </div>
+      <div class="col-sm-4">
+        <div class="build_line" <% if @user_stats %>
+                                 data-user-value-0-10="<%= @user_stats[:xp_diff][:zero_ten] %>"
+                                 data-user-value-10-20="<%= @user_stats[:xp_diff][:ten_twenty] %>"
+                                 data-user-value-20-30="<%= @user_stats[:xp_diff][:twenty_thirty] %>"
+                                 data-user-value-30-end="<%= @user_stats[:xp_diff][:thirty_end] %>"
+                                 <% else %>
+                                 data-user-value-0-10="0"
+                                 data-user-value-10-20="0"
+                                 data-user-value-20-30="0"
+                                 data-user-value-30-end="0"
+                                 <% end %>
+                                 <% if @average_stats %>
+                                 data-comparison-value-0-10="<%= @average_stats[:xp_diff][:zero_ten] %>"
+                                 data-comparison-value-10-20="<%= @average_stats[:xp_diff][:ten_twenty] %>"
+                                 data-comparison-value-20-30="<%= @average_stats[:xp_diff][:twenty_thirty] %>"
+                                 data-comparison-value-30-end="<%= @average_stats[:xp_diff][:thirty_end] %>"
+                                 <% else %>
+                                 data-comparison-value-0-10="0"
+                                 data-comparison-value-10-20="0"
+                                 data-comparison-value-20-30="0"
+                                 data-comparison-value-30-end="0"
+                                 <% end %>
+                                 data-chart-title="XP/min Diff"
+                                 data-summoner-name="<%= @summoner.summoner_name %>"
+                                 data-comparison-title="<%= @tier.capitalize %>"></div>
+      </div>
+      <div class="col-sm-4">
+        <div class="build_line" <% if @user_stats %>
+                                 data-user-value-0-10="<%= @user_stats[:damage_taken_diff][:zero_ten] %>"
+                                 data-user-value-10-20="<%= @user_stats[:damage_taken_diff][:ten_twenty] %>"
+                                 data-user-value-20-30="<%= @user_stats[:damage_taken_diff][:twenty_thirty] %>"
+                                 data-user-value-30-end="<%= @user_stats[:damage_taken_diff][:thirty_end] %>"
+                                 <% else %>
+                                 data-user-value-0-10="0"
+                                 data-user-value-10-20="0"
+                                 data-user-value-20-30="0"
+                                 data-user-value-30-end="0"
+                                 <% end %>
+                                 <% if @average_stats %>
+                                 data-comparison-value-0-10="<%= @average_stats[:damage_taken_diff][:zero_ten] %>"
+                                 data-comparison-value-10-20="<%= @average_stats[:damage_taken_diff][:ten_twenty] %>"
+                                 data-comparison-value-20-30="<%= @average_stats[:damage_taken_diff][:twenty_thirty] %>"
+                                 data-comparison-value-30-end="<%= @average_stats[:damage_taken_diff][:thirty_end] %>"
+                                 <% else %>
+                                 data-comparison-value-0-10="0"
+                                 data-comparison-value-10-20="0"
+                                 data-comparison-value-20-30="0"
+                                 data-comparison-value-30-end="0"
+                                 <% end %>
+                                 data-chart-title="Damage Taken Diff"
+                                 data-summoner-name="<%= @summoner.summoner_name %>"
+                                 data-comparison-title="<%= @tier.capitalize %>"></div>
+      </div>
+    </div>
   </div>
 </div>
