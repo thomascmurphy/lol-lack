@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'about/index'
+
   get 'summoner/index'
   post 'summoner/search', to: 'summoner#search'
   get 'summoner/:summoner_name', to: 'summoner#show', as: 'summoner'
