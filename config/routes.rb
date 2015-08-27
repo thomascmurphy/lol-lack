@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'about/index'
+  get 'about', to: 'about#index'
 
   get 'summoner/index'
   post 'summoner/search', to: 'summoner#search'
