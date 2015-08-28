@@ -18,6 +18,13 @@ class MatchDataJob < Struct.new(:match_id_ours)
 
   def error(job, exception)
     @exception = exception
+    if not_found?
+      match = Match.find_by_id(match_id_ours)
+      if match.present? && match.processed.blank?
+        match.processed = true
+        match.save()
+      end
+    end
   end
 
   def reschedule_at(attempts, time)
