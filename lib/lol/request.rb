@@ -21,7 +21,7 @@ module Lol
       @options[:query] = @options[:query].merge(extra_query)
       response = self.class.get(@base_api + url, @options)
       if response.respond_to?(:code) && !(200...300).include?(response.code)
-        raise NotFound.new("404 Not Found") if response.not_found?
+        raise NotFound.new("404 Not Found #{url} #{extra_query}") if response.not_found?
         raise TooManyRequests.new('429 Rate limit exceeded') if response.code == 429
         raise InvalidAPIResponse.new(response)
       end
