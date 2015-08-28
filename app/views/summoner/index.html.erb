@@ -1,3 +1,10 @@
+<div class="row large_margin_bottom">
+  <div class="col-sm-8 col-sm-offset-2">
+    <p class="lead text-center">Fill out the fields below in order to compare your game statistics with those of another tier
+      (defaults to the tier above your current placement) in order to see what aspects of the game you could improve upon.</p>
+  </div>
+</div>
+
 <%= form_tag("/summoner/search", method: "post", class: "form-horizontal", id: "summoner_form") do %>
   <div class="form-group">
     <div class="col-sm-3">
@@ -5,7 +12,7 @@
       <div id="stored_summoner_names">
       </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-2">
       <%= select_tag(:champion_id,
                      options_from_collection_for_select(Champion.all.order(:name), :champion_id, :name),
                      class: "form-control",
@@ -27,10 +34,17 @@
                      tabindex: "1",
                      prompt: "Tier") %>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-1">
       <%= select_tag(:region,
                      options_for_select([['NA', 'na'], ['EUW', 'euw'], ['EUNE', 'eune'], ['KR', 'kr'],
                                          ['OCE', 'oce'], ['BR', 'br'], ['LAN', 'lan'], ['RU', 'ru'], ['TR', 'tr']]),
+                     tabindex: "1",
+                     class: "form-control") %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag(:game_count,
+                     options_for_select([['Last Game', '1'], ['Last 5 Games', '5'], ['Last 10 Games', '10'],
+                                         ['Last 25 Games', '25'], ['Last 50 Games', '50']], selected: '10'),
                      tabindex: "1",
                      class: "form-control") %>
     </div>

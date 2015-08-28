@@ -8,7 +8,8 @@ class SummonerController < ApplicationController
                                 champion_id: params[:champion_id],
                                 role: params[:role],
                                 tier: params[:tier],
-                                region: params[:region])
+                                region: params[:region],
+                                game_count: params[:game_count])
     else
       flash[:alert] = "Please enter a valid summoner name"
       redirect_to action: "index"
@@ -21,6 +22,7 @@ class SummonerController < ApplicationController
       require 'lol/request'
       if params[:summoner_name].present? && params[:champion_id].present?
         region = params[:region] || 'na'
+        game_count = params[:game_count].to_i > 0 ? [params[:game_count].to_i, 50].min : 10
         @summoner_name = ERB::Util.url_encode(params[:summoner_name].downcase.gsub(/\s+/, ""))
         @summoner = Summoner.find_or_initialize_by(summoner_name: @summoner_name, region: region)
         @champion = Champion.find_by(champion_id: params[:champion_id])
@@ -42,7 +44,7 @@ class SummonerController < ApplicationController
         query = {championIds: champion_id,
                  rankedQueues: 'RANKED_SOLO_5x5',
                  beginIndex: 0,
-                 endIndex: 10}
+                 endIndex: game_count}
         user_games = @summoner.get_champion_matches(query).where(champion_id: champion_id,
                                                             lane: lane_role[:lane],
                                                             role: lane_role[:role])
