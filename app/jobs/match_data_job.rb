@@ -23,14 +23,14 @@ class MatchDataJob < Struct.new(:match_id_ours)
   def reschedule_at(attempts, time)
     if at_rate_limit?
       next_rate_limit_window
-    elsif server_issues?
-      next_server_issues_window
     end
   end
 
   def max_attempts
     if at_rate_limit?
       10
+    elsif not_found?
+      1
     else
       Delayed::Worker.max_attempts
     end
@@ -42,16 +42,12 @@ class MatchDataJob < Struct.new(:match_id_ours)
     @exception.is_a?(Lol::TooManyRequests)
   end
 
-  def server_issues?
+  def not_found?
     @exception.is_a?(Lol::NotFound)
   end
 
   def next_rate_limit_window
     self.class.queue_time + 30.seconds
-  end
-
-  def next_server_issues_window
-    self.class.queue_time + 10.minutes
   end
 
 end
