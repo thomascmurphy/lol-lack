@@ -5,7 +5,9 @@
   </div>
   <div class="col-xs-10">
     <h1><%= @champion.name %> <small>(<%= @role.capitalize %>)</small></h1>
-    <h4>Comparing <%= @summoner_name %>'s last <% if @user_stats %><%= @user_stats[:count] %><% else %>0<% end %> ranked matches with
+    <h4>Comparing <%= @summoner_name %>'s last
+      <% if @user_stats %><%= @user_stats[:count] %><% else %>0<% end %>
+      ranked matches <% if @user_stats %>(<%= number_to_percentage(@user_stats[:win_rate] * 100, precision: 1) %> win rate)<% end %> with
       <% if @average_stats %><%= @average_stats[:count] %><% else %>0<% end %> <%= @tier.capitalize %>-level <% if @only_wins %>victorious <% end %>matches</h4>
   </div>
 </div>
@@ -222,10 +224,10 @@
                              data-comparison-value-20-30="<%= @average_stats[:cs_per_min][:twenty_thirty] %>"
                              data-comparison-value-30-end="<%= @average_stats[:cs_per_min][:thirty_end] %>"
                              <% else %>
-                             data-comparison-value-0-10="1.0"
-                             data-comparison-value-10-20="0.8"
-                             data-comparison-value-20-30="-0.2"
-                             data-comparison-value-30-end="0.0"
+                             data-comparison-value-0-10="0"
+                             data-comparison-value-10-20="0"
+                             data-comparison-value-20-30="0"
+                             data-comparison-value-30-end="0"
                              <% end %>
                              data-chart-title="CS/min"
                              data-summoner-name="<%= @summoner.summoner_name %>"

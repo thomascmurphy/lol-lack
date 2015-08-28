@@ -41,7 +41,7 @@ class SummonerController < ApplicationController
         lane_role = ChampionMatch.convertRole(params[:role])
         query = {championIds: champion_id,
                  rankedQueues: 'RANKED_SOLO_5x5',
-                 beginIndex: 0, 
+                 beginIndex: 0,
                  endIndex: 10}
         user_games = @summoner.get_champion_matches(query).where(champion_id: champion_id,
                                                             lane: lane_role[:lane],
@@ -66,7 +66,7 @@ class SummonerController < ApplicationController
       flash[:alert] = "We've reached our API limit :( , please try again in a few minutes."
       redirect_to action: "index"
     rescue Lol::NotFound
-      flash[:alert] = "Couldn't complete the request, make sure your summoner name  and region are entered correctly."
+      flash[:alert] = "Couldn't complete the request, make sure your summoner name and region are entered correctly. Could also be Riot's servers."
       redirect_to action: "index"
     rescue Lol::InvalidAPIResponse
       flash[:alert] = "Invalid API Response"

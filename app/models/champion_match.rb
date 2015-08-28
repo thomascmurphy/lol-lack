@@ -100,6 +100,7 @@ class ChampionMatch < ActiveRecord::Base
 
   def self.average_values(matches)
     if matches.count > 0
+      win_rate = matches.where("winner = ?", true).count.to_f / matches.count.to_f
       kills = matches.average('kills')
       deaths = matches.average('deaths')
       kda = deaths > 0 ? (kills + matches.average('assists')) / deaths : kills + matches.average('assists')
@@ -144,6 +145,7 @@ class ChampionMatch < ActiveRecord::Base
                            twenty_thirty: (matches.average('damage_taken_diff_20_30') || 0).round(2).to_f,
                            thirty_end: (matches.average('damage_taken_diff_30_end') || 0).round(2).to_f}
       {count: matches.count,
+       win_rate: win_rate.round(3).to_f,
        kda: kda.round(2).to_f,
        duration: matches.average('duration').round(0).to_f,
        structure_participation: structure_participation.round(3).to_f,
