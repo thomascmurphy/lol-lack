@@ -1,3 +1,4 @@
+<% if @champion.present? %>
 <div class="row large_margin_bottom">
   <div class="col-xs-2">
     <img src="<%= @champion.image %>" alt="<%= @champion.name %>" class="img-responsive"/>
@@ -8,6 +9,7 @@
       <% if @average_stats %><%= @average_stats[:count] %><% else %>0<% end %> <%= @tier.capitalize %>-level <% if @only_wins %>victorious <% end %>matches</h4>
   </div>
 </div>
+<% end %>
 <div class="row large_margin_bottom">
   <div class="col-sm-4">
     <div class="build_donut" <% if @user_stats %>
