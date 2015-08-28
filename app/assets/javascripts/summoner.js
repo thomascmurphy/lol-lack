@@ -36,6 +36,10 @@ $(document).on('ready page:change', function() {
     }
   }
 
+});
+
+jQuery(function($){
+
   var donut_options = function(superior){
     var main_color = '#FF9800';
     if (superior) {
@@ -118,6 +122,5 @@ $(document).on('ready page:change', function() {
     };
     $(this).drawLine(line_data, $.extend(specific_line_options, line_options));
   });
-
-
+  
 });
