@@ -54,7 +54,10 @@ $shader_white_light: rgba(255, 255, 255, 0.2);
 
 $cyan: #00BCD4;
 $cyan_dark: #0097A7;
+$cyan_translucent: rgba(0, 188, 212, 0.8);
 $orange: #FF9800;
+$orange_dark: #EF6C00;
+$orange_translucent: rgba(255, 152, 0, 0.8);
 $white: #FFFFFF;
 
 $font_stack: "Lato", sans-serif;
@@ -213,6 +216,32 @@ a.row, a.block, img.block{
 
 .pointer{
     cursor: pointer;
+}
+
+.cyan, a.cyan:hover{
+    color: $cyan;
+}
+
+.cyan_bg{
+    background-color: $cyan;
+    color: #fff;
+}
+
+.cyan_bg.translucent{
+    background-color: $cyan_translucent;
+}
+
+.orange, a.orange:hover{
+    color: $orange;
+}
+
+.orange_bg{
+    background-color: $orange;
+    color: #fff;
+}
+
+.orange_bg.translucent{
+    background-color: $orange_translucent;
 }
 
 .white, a.white:hover, a.white:focus, a.white:active{
