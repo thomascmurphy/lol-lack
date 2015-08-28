@@ -21,7 +21,7 @@ $(document).on('ready page:change', function() {
 
       $('#summoner_form').submit(function() {
         var summoner_name = $(this).find('input[name="summoner_name"]').val();
-        if (summoner_name) {
+        if (summoner_name && $.inArray(summoner_name, stored_names) == -1) {
           stored_names.unshift(summoner_name);
         }
         if (stored_names.length > 3) {
@@ -122,5 +122,5 @@ jQuery(function($){
     };
     $(this).drawLine(line_data, $.extend(specific_line_options, line_options));
   });
-  
+
 });
