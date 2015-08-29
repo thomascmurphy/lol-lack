@@ -53,9 +53,12 @@ class SummonerController < ApplicationController
         user_games = @summoner.get_champion_matches(api_query).where(user_query_hash)
         @user_stats = ChampionMatch.average_values(user_games)
 
-        @only_wins = params[:only_wins] == "false" ? false : true
+        @only_wins = params[:only_wins] == "true" ? true : false
         @tier = params[:tier].presence || @summoner.next_tier()
-        comparison_games = ChampionMatch.where(user_query_hash.merge({tier: @tier, winner: @only_wins}))
+        comparison_query_hash = {}
+        comparison_query_hash[:tier] = @tier unless @tier.blank?
+        comparison_query_hash[:winner] = true unless @only_wins.blank?
+        comparison_games = ChampionMatch.where(user_query_hash.merge(comparison_query_hash))
 
         @average_stats = ChampionMatch.average_values(comparison_games)
       else

@@ -31,7 +31,18 @@
         <%= @average_stats[:count] %>
       <% else %>
         0
-      <% end %> <%= @tier.capitalize %>-level <% if @only_wins %>victorious <% end %>matches.</h4>
+      <% end %> <%= @tier.capitalize %>-level <% if @only_wins %>
+                                                victorious matches
+                                              <% else %>
+                                                matches <% if @average_stats %>
+                                                          <% if @average_stats[:win_rate] > 0.50 %>
+                                                            <strong class="cyan">
+                                                          <% else %>
+                                                            <strong class="orange">
+                                                          <% end %>
+                                                          (<%= number_to_percentage(@average_stats[:win_rate] * 100, precision: 1) %> win rate)</strong>
+                                                        <% end %>
+                                              <% end %>.</h4>
   </div>
 </div>
 <div class="row large_margin_bottom">
