@@ -137,6 +137,11 @@ $font_stack_alt: "Oswald", sans-serif;
     border-color: $cyan_dark;
 }
 
+.row>.less_padding, .form-group>.less_padding{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 
 
 /* ============ General Elements */

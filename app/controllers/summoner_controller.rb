@@ -9,7 +9,8 @@ class SummonerController < ApplicationController
                                 role: params[:role],
                                 tier: params[:tier],
                                 region: params[:region],
-                                game_count: params[:game_count])
+                                game_count: params[:game_count],
+                                games_type: params[:games_type])
     else
       flash[:alert] = "Please enter a valid summoner name"
       redirect_to action: "index"
@@ -27,6 +28,7 @@ class SummonerController < ApplicationController
         @summoner = Summoner.find_or_initialize_by(summoner_name: @summoner_name, region: region)
         @champion = Champion.find_by(champion_id: params[:champion_id])
         @role = params[:role]
+        @games_type = params[:games_type]
         user_game_ids = []
         lol_request = Lol::Request.new(region)
         if @summoner.new_record?
@@ -45,6 +47,12 @@ class SummonerController < ApplicationController
         user_query_hash[:champion_id] = params[:champion_id] unless params[:champion_id].blank?
         user_query_hash[:lane] = lane_role[:lane] unless lane_role[:lane].blank?
         user_query_hash[:role] = lane_role[:role] unless lane_role[:role].blank?
+        if @games_type == "wins"
+          user_query_hash[:winner] = true
+        elsif @games_type == "losses"
+          user_query_hash[:winner] = false
+        end
+        binding.pry()
 
         api_query = {championIds: champion_id,
                      rankedQueues: 'RANKED_SOLO_5x5',
@@ -52,12 +60,11 @@ class SummonerController < ApplicationController
                      endIndex: game_count}
         user_games = @summoner.get_champion_matches(api_query).where(user_query_hash)
         @user_stats = ChampionMatch.average_values(user_games)
-
-        @only_wins = params[:only_wins] == "true" ? true : false
+        
         @tier = params[:tier].presence || @summoner.next_tier()
         comparison_query_hash = {}
         comparison_query_hash[:tier] = @tier unless @tier.blank?
-        comparison_query_hash[:winner] = true unless @only_wins.blank?
+
         comparison_games = ChampionMatch.where(user_query_hash.merge(comparison_query_hash))
 
         @average_stats = ChampionMatch.average_values(comparison_games)

@@ -19,6 +19,11 @@
                         <% end %>)</small></h1>
     <h4>Comparing <%= @summoner_name %>'s last
       <% if @user_stats %><%= @user_stats[:count] %><% else %>0<% end %>
+      <% if @games_type == "wins" %>
+        victorious ranked matches
+      <% elsif @games_type == "losses" %>
+        losing ranked matches
+      <% else %>
       ranked matches <% if @user_stats %>
                       <% if @user_stats[:win_rate] > 0.50 %>
                         <strong class="cyan">
@@ -26,13 +31,17 @@
                         <strong class="orange">
                       <% end %>
                       (<%= number_to_percentage(@user_stats[:win_rate] * 100, precision: 1) %> win rate)</strong>
-                     <% end %> with
+                     <% end %>
+      <% end %> with
+
       <% if @average_stats %>
         <%= @average_stats[:count] %>
       <% else %>
         0
-      <% end %> <%= @tier.capitalize %>-level <% if @only_wins %>
+      <% end %> <%= @tier.capitalize %>-level <% if @games_type == "wins" %>
                                                 victorious matches
+                                              <% elsif @games_type == "losses" %>
+                                                losing matches
                                               <% else %>
                                                 matches <% if @average_stats %>
                                                           <% if @average_stats[:win_rate] > 0.50 %>

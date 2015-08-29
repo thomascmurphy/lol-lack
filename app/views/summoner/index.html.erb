@@ -8,25 +8,36 @@
 <%= form_tag("/summoner/search", method: "post", class: "form-horizontal", id: "summoner_form") do %>
   <div class="form-group">
     <div class="col-sm-3">
-      <%= text_field_tag(:summoner_name, "", class: "form-control", placeholder: "Summoner Name", tabindex: "1") %>
+      <div class="row">
+        <div class="col-xs-8">
+          <%= text_field_tag(:summoner_name, "", class: "form-control", placeholder: "Summoner Name", tabindex: "1") %>
+        </div>
+        <div class="col-xs-4">
+          <%= select_tag(:region,
+                         options_for_select([['NA', 'na'], ['EUW', 'euw'], ['EUNE', 'eune'], ['KR', 'kr'],
+                                             ['OCE', 'oce'], ['BR', 'br'], ['LAN', 'lan'], ['RU', 'ru'], ['TR', 'tr']]),
+                         tabindex: "1",
+                         class: "form-control") %>
+        </div>
+      </div>
       <div id="stored_summoner_names">
       </div>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-2 less_padding">
       <%= select_tag(:champion_id,
                      options_from_collection_for_select(Champion.all.order(:name), :champion_id, :name),
                      class: "form-control",
                      tabindex: "1",
                      prompt: "Champion") %>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-1 less_padding">
       <%= select_tag(:role,
                      options_for_select([['Top', 'top'], ['Jungle', 'jungle'], ['Mid', 'mid'], ['ADC', 'adc'], ['Support', 'support']]),
                      class: "form-control",
                      tabindex: "1",
                      prompt: "Role") %>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-2 less_padding">
       <%= select_tag(:tier,
                      options_for_select([['Bronze', 'BRONZE'], ['Silver', 'SILVER'], ['Gold', 'GOLD'], ['Platinum', 'PLATINUM'],
                                          ['Diamond', 'DIAMOND'], ['Master', 'MASTER'], ['Challenger', 'CHALLENGER']]),
@@ -34,19 +45,18 @@
                      tabindex: "1",
                      prompt: "Tier") %>
     </div>
-    <div class="col-sm-1">
-      <%= select_tag(:region,
-                     options_for_select([['NA', 'na'], ['EUW', 'euw'], ['EUNE', 'eune'], ['KR', 'kr'],
-                                         ['OCE', 'oce'], ['BR', 'br'], ['LAN', 'lan'], ['RU', 'ru'], ['TR', 'tr']]),
-                     tabindex: "1",
-                     class: "form-control") %>
-    </div>
-    <div class="col-sm-2">
+    <div class="col-sm-2 less_padding">
       <%= select_tag(:game_count,
                      options_for_select([['Last Game', '1'], ['Last 5 Games', '5'], ['Last 10 Games', '10'],
                                          ['Last 25 Games', '25'], ['Last 50 Games', '50']], selected: '10'),
                      tabindex: "1",
                      class: "form-control") %>
+    </div>
+    <div class="col-sm-2 less_padding">
+      <%= select_tag(:games_type,
+                     options_for_select([['All Games', 'all'], ['Only Wins', 'wins'], ['Only Losses', 'losses']], selected:'all'),
+                     class: "form-control",
+                     tabindex: "1") %>
     </div>
   </div>
   <div class="form-group">
