@@ -1,10 +1,22 @@
-<% if @champion.present? %>
 <div class="row large_margin_bottom">
-  <div class="col-xs-2">
-    <img src="<%= @champion.image %>" alt="<%= @champion.name %>" class="img-responsive"/>
+  <div class="col-xs-4 col-sm-2">
+    <% if @champion.present? %>
+      <img src="<%= @champion.image %>" alt="<%= @champion.name %>" class="img-responsive z_depth_1"/>
+    <% else %>
+      <div class="placeholder z_depth_1"><span>?</span></div>
+    <% end %>
   </div>
-  <div class="col-xs-10">
-    <h1><%= @champion.name %> <small>(<%= @role.capitalize %>)</small></h1>
+  <div class="col-xs-8 col-sm-10">
+    <h1 class="no_margin_top">
+      <% if @champion.present? %>
+        <%= @champion.name %>
+      <% else %>
+        No Champion Specified
+      <% end %> <small>(<% if @role.present? %>
+                          <%= @role.capitalize %>
+                        <% else %>
+                          No Role Specified
+                        <% end %>)</small></h1>
     <h4>Comparing <%= @summoner_name %>'s last
       <% if @user_stats %><%= @user_stats[:count] %><% else %>0<% end %>
       ranked matches <% if @user_stats %>
@@ -22,7 +34,6 @@
       <% end %> <%= @tier.capitalize %>-level <% if @only_wins %>victorious <% end %>matches.</h4>
   </div>
 </div>
-<% end %>
 <div class="row large_margin_bottom">
   <div class="col-sm-4">
     <div class="build_donut" <% if @user_stats %>

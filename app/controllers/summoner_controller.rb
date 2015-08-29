@@ -20,7 +20,7 @@ class SummonerController < ApplicationController
     @wide_content = false
     begin
       require 'lol/request'
-      if params[:summoner_name].present? && params[:champion_id].present?
+      if params[:summoner_name].present?
         region = params[:region] || 'na'
         game_count = params[:game_count].to_i > 0 ? [params[:game_count].to_i, 50].min : 10
         @summoner_name = ERB::Util.url_encode(params[:summoner_name].downcase.gsub(/\s+/, ""))
@@ -41,26 +41,25 @@ class SummonerController < ApplicationController
 
         champion_id = params[:champion_id]
         lane_role = ChampionMatch.convertRole(params[:role])
-        query = {championIds: champion_id,
-                 rankedQueues: 'RANKED_SOLO_5x5',
-                 beginIndex: 0,
-                 endIndex: game_count}
-        user_games = @summoner.get_champion_matches(query).where(champion_id: champion_id,
-                                                            lane: lane_role[:lane],
-                                                            role: lane_role[:role])
+        user_query_hash = {}
+        user_query_hash[:champion_id] = params[:champion_id] unless params[:champion_id].blank?
+        user_query_hash[:lane] = lane_role[:lane] unless lane_role[:lane].blank?
+        user_query_hash[:role] = lane_role[:role] unless lane_role[:role].blank?
+
+        api_query = {championIds: champion_id,
+                     rankedQueues: 'RANKED_SOLO_5x5',
+                     beginIndex: 0,
+                     endIndex: game_count}
+        user_games = @summoner.get_champion_matches(api_query).where(user_query_hash)
         @user_stats = ChampionMatch.average_values(user_games)
 
         @only_wins = params[:only_wins] == "false" ? false : true
         @tier = params[:tier].presence || @summoner.next_tier()
-        comparison_games = ChampionMatch.where(champion_id: champion_id,
-                                               lane: lane_role[:lane],
-                                               role: lane_role[:role],
-                                               tier: @tier,
-                                               winner: @only_wins)
+        comparison_games = ChampionMatch.where(user_query_hash.merge({tier: @tier, winner: @only_wins}))
 
         @average_stats = ChampionMatch.average_values(comparison_games)
       else
-        flash[:alert] = "Please enter a champion and role"
+        flash[:alert] = "Please enter a valid summoner name"
         redirect_to action: "index"
       end
 

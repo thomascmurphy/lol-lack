@@ -31,8 +31,8 @@ $screen-lg-min: 1200px;
 $screen-md-max: ($screen-lg-min - 1);
 
 $background_light: #fffffa;
-$background_medium: #FFEA00;
-$background_dark: #4CAF50;
+$background_medium: #E0E0E0;
+$background_dark: #757575;
 
 $divider_color: rgba(0, 0, 0, 0.12);
 $divider_color_light: rgba(255, 255, 255, 0.8);
@@ -403,6 +403,31 @@ a.shader_light_bg:hover{
 	-webkit-animation-iteration-count: infinite;
 	-webkit-animation-timing-function: linear;
 	z-index: 501;
+}
+
+.placeholder{
+  background-color: $background_medium;
+  @include border-radius(5px);
+  font-family: $font_stack_alt;
+  font-size: 4em;
+  font-weight: bold;
+  text-align: center;
+  width: 120px;
+  height: 120px;
+  max-width: 100%;
+
+  span{
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &:after{
+    content: "";
+    display: inline-block;
+    width: 0px;
+    height: 100%;
+    vertical-align: middle;
+  }
 }
 
 
