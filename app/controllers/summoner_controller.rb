@@ -52,7 +52,6 @@ class SummonerController < ApplicationController
         elsif @games_type == "losses"
           user_query_hash[:winner] = false
         end
-        binding.pry()
 
         api_query = {championIds: champion_id,
                      rankedQueues: 'RANKED_SOLO_5x5',
@@ -60,7 +59,7 @@ class SummonerController < ApplicationController
                      endIndex: game_count}
         user_games = @summoner.get_champion_matches(api_query).where(user_query_hash)
         @user_stats = ChampionMatch.average_values(user_games)
-        
+
         @tier = params[:tier].presence || @summoner.next_tier()
         comparison_query_hash = {}
         comparison_query_hash[:tier] = @tier unless @tier.blank?
