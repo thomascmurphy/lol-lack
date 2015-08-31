@@ -22,7 +22,7 @@ module Lol
       response = self.class.get(@base_api + url, @options)
       if response.respond_to?(:code) && !(200...300).include?(response.code)
         raise NotFound.new("404 Not Found #{url} #{extra_query}") if response.not_found?
-        raise TooManyRequests.new('429 Rate limit exceeded') if response.code == 429
+        raise TooManyRequests.new("429 Rate limit exceeded, retry after: #{response.headers['retry-after']}, type: #{response.headers['x-rate-limit-type']}") if response.code == 429
         raise InvalidAPIResponse.new(response)
       end
       response
