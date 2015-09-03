@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825201658) do
+ActiveRecord::Schema.define(version: 20150903000035) do
 
   create_table "champion_matches", force: :cascade do |t|
     t.integer  "summoner_id",               limit: 8
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20150825201658) do
     t.integer  "team_deaths"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.datetime "timestamp"
   end
 
   add_index "champion_matches", ["champion_id"], name: "index_champion_matches_on_champion_id"
@@ -117,6 +118,7 @@ ActiveRecord::Schema.define(version: 20150825201658) do
     t.boolean  "processed",            default: false
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
+    t.datetime "timestamp"
   end
 
   add_index "matches", ["match_id"], name: "index_matches_on_match_id"

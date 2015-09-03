@@ -39,8 +39,8 @@ namespace :static_data do
 
   task convert_game_data: :environment do
     if Delayed::Job.where("handler LIKE '%MatchDataJob%'").count() < 100
-      limit = Rails.env == 'production' ? 30 : 10
-      matches = Match.where(processed: false).limit(limit)
+      limit = Rails.env == 'production' ? 40 : 10
+      matches = Match.where(processed: false).limit(limit).order("RANDOM()")
       matches.each do |match|
         Delayed::Job.enqueue(MatchDataJob.new(match.id), run_at:MatchDataJob.queue_time())
       end

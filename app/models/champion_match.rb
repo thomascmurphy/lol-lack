@@ -6,6 +6,7 @@ class ChampionMatch < ActiveRecord::Base
     self.season = api_response["season"]
     self.version = api_response["matchVersion"]
     self.duration = api_response["matchDuration"]
+    self.timestamp = Time.at((api_response["matchCreation"]/1000).round(0))
     self.save()
   end
 
