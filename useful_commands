@@ -57,3 +57,7 @@ ps -u suffrage -o size,pid,user,command --sort -size | awk '{ hr=$1/1024 ; print
 
  'pkill -u suffrage' can be used to terminate ALL of your processes.
  If you do not wish to kill all of you processes, you will need to use 'ps -aux' and find/kill all of the cron jobs manually.
+
+
+
+ export XDG_RUNTIME_DIR=/tmp/`whoami`
