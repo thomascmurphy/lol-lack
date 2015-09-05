@@ -7,6 +7,10 @@ class Match < ActiveRecord::Base
       lol_request = Lol::Request.new(self.region)
       api_response = lol_request.match_detail(self.match_id)
       if api_response.present? && api_response.has_key?("participantIdentities")
+        if self.timestamp.blank?
+          self.timestamp = Time.at((api_response["matchCreation"]/1000).round(0)).utc
+          self.save()
+        end
         summoners = []
         api_response["participantIdentities"].each do |participant|
           summoner_id = participant["player"]["summonerId"]
