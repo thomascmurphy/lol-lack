@@ -48,12 +48,15 @@ class Match < ActiveRecord::Base
     match_ids = []
     if user_games.has_key?("matches") && user_games["matches"].present?
       user_games["matches"].each do |user_game|
-        match = Match.find_or_initialize_by(match_id: user_game["matchId"], region: region)
-        if match.new_record?
-          match.timestamp = Time.at((user_game["timestamp"]/1000).round(0))
-          match.save()
+        match_timestamp = Time.at((user_game["timestamp"]/1000).round(0)).utc
+        if Time.now.utc - match_timestamp < 30.days
+          match = Match.find_or_initialize_by(match_id: user_game["matchId"], region: region)
+          if match.new_record?
+            match.timestamp = match_timestamp
+            match.save()
+          end
+          match_ids << match.id
         end
-        match_ids << match.id
       end
       Match.where(id: match_ids)
     else
