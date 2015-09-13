@@ -23,3 +23,8 @@
 every 10.minutes do
   rake "static_data:convert_game_data"
 end
+
+every 1.day, :at => '4:30 am' do
+  rake "static_data:clean_old_game_data"
+  rake "static_data:seed_game_data"
+end

@@ -22,7 +22,7 @@ namespace :static_data do
     end
   end
 
-  task initial_game_data: :environment do
+  task seed_game_data: :environment do
     #60263441 = tomutron (silver)
     #19522880 = All Star Akali (silver)
     #53884466 = Vulgate (gold)
@@ -39,12 +39,21 @@ namespace :static_data do
 
   task convert_game_data: :environment do
     if Delayed::Job.where("handler LIKE '%MatchDataJob%'").count() < 100
-      limit = Rails.env == 'production' ? 40 : 10
-      matches = Match.where(processed: false).limit(limit).order("RANDOM()")
+      limit = Rails.env == 'production' ? 50 : 10
+      if Rails.env == 'production'
+        matches = Match.where(processed: false).limit(limit).order("timestamp DESC NULLS LAST, RANDOM()")
+      else
+        matches = Match.where(processed: false).limit(limit).order("timestamp DESC, RANDOM()")
+      end
       matches.each do |match|
         Delayed::Job.enqueue(MatchDataJob.new(match.id), run_at:MatchDataJob.queue_time())
       end
     end
+  end
+
+  task clean_old_game_data: :environment do
+    Match.where("timestamp < ?", Match.date_cutoff()).delete_all()
+    ChampionMatch.where("timestamp < ?", Match.date_cutoff()).delete_all()
   end
 
 end

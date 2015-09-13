@@ -1,5 +1,9 @@
 class Match < ActiveRecord::Base
 
+  def self.date_cutoff
+    Time.now.utc - 60.days
+  end
+
   def process_stats(propogate=true)
     champion_match_ids = []
     if self.processed.blank?
@@ -29,7 +33,7 @@ class Match < ActiveRecord::Base
           else
             champion_match_ids << existing_match.id
           end
-          if propogate && ChampionMatch.where(champion_id: participant_data["championId"], tier: participant_data["highestAchievedSeasonTier"]).count < 50 && Match.where(processed: false).count() < 100000
+          if propogate && ChampionMatch.where(champion_id: participant_data["championId"], tier: participant_data["highestAchievedSeasonTier"]).count < 50 && Match.where(processed: false).count() < 500000
             query = {rankedQueues: 'RANKED_SOLO_5x5',
                      beginIndex: 0,
                      endIndex: 10}
@@ -53,9 +57,9 @@ class Match < ActiveRecord::Base
     if user_games.has_key?("matches") && user_games["matches"].present?
       user_games["matches"].each do |user_game|
         match_timestamp = Time.at((user_game["timestamp"]/1000).round(0)).utc
-        if Time.now.utc - match_timestamp < 30.days
+        if match_timestamp >= self.date_cutoff()
           match = Match.find_or_initialize_by(match_id: user_game["matchId"], region: region)
-          if match.new_record?
+          if match.timestamp.blank?
             match.timestamp = match_timestamp
             match.save()
           end

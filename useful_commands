@@ -52,6 +52,9 @@ ps -u suffrage -o size,pid,user,command --sort -size | awk '{ hr=$1/1024 ; print
 # Begin Whenever generated tasks for: /home/suffrage/webapps/lolevation/lolevation/config/schedule.rb
 0,10,20,30,40,50 * * * * /bin/bash -l -c 'cd /home/suffrage/webapps/lolevation/lolevation && RAILS_ENV=production GEM_HOME=/home/suffrage/webapps/lolevation/gems PATH=/home/suffrage/webapps/lolevation/bin:/usr/local/bin:$PATH bundle exec rake static_data:convert_game_data --silent'
 
+30 4 * * * /bin/bash -l -c 'cd /Users/thomasmurphy/Desktop/projects/lolevation && RAILS_ENV=production GEM_HOME=/home/suffrage/webapps/lolevation/gems PATH=/home/suffrage/webapps/lolevation/bin:/usr/local/bin:$PATH bundle exec rake static_data:clean_old_game_data --silent'
+
+30 4 * * * /bin/bash -l -c 'cd /Users/thomasmurphy/Desktop/projects/lolevation && RAILS_ENV=production GEM_HOME=/home/suffrage/webapps/lolevation/gems PATH=/home/suffrage/webapps/lolevation/bin:/usr/local/bin:$PATH bundle exec rake static_data:seed_game_data --silent'
 # End Whenever generated tasks for: /home/suffrage/webapps/lolevation/lolevation/config/schedule.rb
 
 
