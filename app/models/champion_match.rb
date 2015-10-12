@@ -99,69 +99,124 @@ class ChampionMatch < ActiveRecord::Base
     self.save()
   end
 
-  def self.average_values(matches)
-    if matches.count > 0
-      win_rate = matches.where("winner = ?", true).count.to_f / matches.count.to_f
-      kills = matches.average('kills')
-      deaths = matches.average('deaths')
-      kda = deaths > 0 ? (kills + matches.average('assists')) / deaths : kills + matches.average('assists')
-      structures_destroyed = matches.average('inhibitor_kills') + matches.average('tower_kills')
-      team_structures_destroyed = matches.average('team_inhibitor_kills') + matches.average('team_tower_kills')
-      structure_participation = team_structures_destroyed > 0 ? structures_destroyed / team_structures_destroyed : 0
-      first_blood_participation = matches.where("first_blood_kill = ? OR first_blood_assist = ?", true, true).count.to_f / matches.count.to_f
-      team_kills = matches.average('team_kills')
-      kill_participation = team_kills > 0 ? kills / team_kills : 1
-      team_deaths = matches.average('team_deaths')
-      death_participation = team_deaths > 0 ? deaths / team_deaths : 0
-      total_damage_dealt_champs = matches.average('total_damage_dealt_champs')
-      total_damage_taken = matches.average('total_damage_taken')
-      monsters_team_jungle = matches.average('monsters_team_jungle')
-      monsters_enemy_jungle = matches.average('monsters_enemy_jungle')
-      team_dragon_kills = matches.average('team_dragon_kills')
-      team_baron_kills = matches.average('team_baron_kills')
-      total_cs = matches.average('total_cs')
+  def self.average_values(champion_match_ids)
+    if champion_match_ids.count > 0
+      average_query = %Q(
+        SELECT AVG(cm.duration) AS duration,
+          AVG(cm.kills) AS kills,
+          AVG(cm.deaths) AS deaths,
+          AVG(cm.assists) AS assists,
+          AVG(cm.tower_kills) AS tower_kills,
+          AVG(cm.inhibitor_kills) AS inhibitor_kills,
+          AVG(cm.wards_placed) AS wards_placed,
+          AVG(cm.wards_killed) AS wards_killed,
+          AVG(cm.xp_per_min_0_10) AS xp_per_min_0_10,
+          AVG(cm.xp_per_min_10_20) AS xp_per_min_10_20,
+          AVG(cm.xp_per_min_20_30) AS xp_per_min_20_30,
+          AVG(cm.xp_per_min_30_end) AS xp_per_min_30_end,
+          AVG(cm.xp_diff_0_10) AS xp_diff_0_10,
+          AVG(cm.xp_diff_10_20) AS xp_diff_10_20,
+          AVG(cm.xp_diff_20_30) AS xp_diff_20_30,
+          AVG(cm.xp_diff_30_end) AS xp_diff_30_end,
+          AVG(cm.cs_per_min_0_10) AS cs_per_min_0_10,
+          AVG(cm.cs_per_min_10_20) AS cs_per_min_10_20,
+          AVG(cm.cs_per_min_20_30) AS cs_per_min_20_30,
+          AVG(cm.cs_per_min_30_end) AS cs_per_min_30_end,
+          AVG(cm.cs_diff_0_10) AS cs_diff_0_10,
+          AVG(cm.cs_diff_10_20) AS cs_diff_10_20,
+          AVG(cm.cs_diff_20_30) AS cs_diff_20_30,
+          AVG(cm.cs_diff_30_end) AS cs_diff_30_end,
+          AVG(cm.gold_per_min_0_10) AS gold_per_min_0_10,
+          AVG(cm.gold_per_min_10_20) AS gold_per_min_10_20,
+          AVG(cm.gold_per_min_20_30) AS gold_per_min_20_30,
+          AVG(cm.gold_per_min_30_end) AS gold_per_min_30_end,
+          AVG(cm.damage_taken_diff_0_10) AS damage_taken_diff_0_10,
+          AVG(cm.damage_taken_diff_10_20) AS damage_taken_diff_10_20,
+          AVG(cm.damage_taken_diff_20_30) AS damage_taken_diff_20_30,
+          AVG(cm.damage_taken_diff_30_end) AS damage_taken_diff_30_end,
+          AVG(cm.total_damage_dealt_champs) AS total_damage_dealt_champs,
+          AVG(cm.total_damage_taken) AS total_damage_taken,
+          AVG(cm.total_cs) AS total_cs,
+          AVG(cm.monsters_enemy_jungle) AS monsters_enemy_jungle,
+          AVG(cm.monsters_team_jungle) AS monsters_team_jungle,
+          AVG(cm.team_dragon_kills) AS team_dragon_kills,
+          AVG(cm.team_baron_kills) AS team_baron_kills,
+          AVG(cm.team_tower_kills) AS team_tower_kills,
+          AVG(cm.team_inhibitor_kills) AS team_inhibitor_kills,
+          AVG(cm.team_kills) AS team_kills,
+          AVG(cm.team_deaths) AS team_deaths
 
-      xp_per_min = {zero_ten: (matches.average('xp_per_min_0_10') || 0).round(2).to_f,
-                    ten_twenty: (matches.average('xp_per_min_10_20') || 0).round(2).to_f,
-                    twenty_thirty: (matches.average('xp_per_min_20_30') || 0).round(2).to_f,
-                    thirty_end: (matches.average('xp_per_min_30_end') || 0).round(2).to_f}
-      xp_diff = {zero_ten: (matches.average('xp_diff_0_10') || 0).round(2).to_f,
-                 ten_twenty: (matches.average('xp_diff_10_20') || 0).round(2).to_f,
-                 twenty_thirty: (matches.average('xp_diff_20_30') || 0).round(2).to_f,
-                 thirty_end: (matches.average('xp_diff_30_end') || 0).round(2).to_f}
-      cs_per_min = {zero_ten: (matches.average('cs_per_min_0_10') || 0).round(2).to_f,
-                    ten_twenty: (matches.average('cs_per_min_10_20') || 0).round(2).to_f,
-                    twenty_thirty: (matches.average('cs_per_min_20_30') || 0).round(2).to_f,
-                    thirty_end: (matches.average('cs_per_min_30_end') || 0).round(2).to_f}
-      cs_diff = {zero_ten: (matches.average('cs_diff_0_10') || 0).round(2).to_f,
-                 ten_twenty: (matches.average('cs_diff_10_20') || 0).round(2).to_f,
-                 twenty_thirty: (matches.average('cs_diff_20_30') || 0).round(2).to_f,
-                 thirty_end: (matches.average('cs_diff_30_end') || 0).round(2).to_f}
-      gold_per_min = {zero_ten: (matches.average('gold_per_min_0_10') || 0).round(2).to_f,
-                      ten_twenty: (matches.average('gold_per_min_10_20') || 0).round(2).to_f,
-                      twenty_thirty: (matches.average('gold_per_min_20_30') || 0).round(2).to_f,
-                      thirty_end: (matches.average('gold_per_min_30_end') || 0).round(2).to_f}
-      damage_taken_diff = {zero_ten: (matches.average('damage_taken_diff_0_10') || 0).round(2).to_f,
-                           ten_twenty: (matches.average('damage_taken_diff_10_20') || 0).round(2).to_f,
-                           twenty_thirty: (matches.average('damage_taken_diff_20_30') || 0).round(2).to_f,
-                           thirty_end: (matches.average('damage_taken_diff_30_end') || 0).round(2).to_f}
-      {count: matches.count,
-       win_rate: win_rate.round(3).to_f,
+        FROM champion_matches cm
+        WHERE cm.id IN (#{champion_match_ids.join(',')})
+      )
+
+      first_blood_query = %Q(
+        SELECT COUNT(cm.id) AS first_blood_participation
+        FROM champion_matches cm
+        WHERE cm.id IN (#{champion_match_ids.join(',')}) AND (cm.first_blood_kill=1 OR cm.first_blood_assist=1)
+      )
+
+      winner_query = %Q(
+        SELECT COUNT(cm.id) AS winner_count
+        FROM champion_matches cm
+        WHERE cm.id IN (#{champion_match_ids.join(',')}) AND (cm.winner=1)
+      )
+
+      averages = ActiveRecord::Base.connection.execute(average_query).entries.first
+      first_blood_data = ActiveRecord::Base.connection.execute(first_blood_query).entries.first
+      winner_data = ActiveRecord::Base.connection.execute(winner_query).entries.first
+
+      match_count = champion_match_ids.count
+      kda = averages["deaths"] > 0 ? (averages["kills"] + averages["assists"]) / averages["deaths"] : averages["kills"] + averages["assists"]
+      structures_destroyed = averages["inhibitor_kills"] + averages["tower_kills"]
+      team_structures_destroyed = averages["team_inhibitor_kills"] + averages["team_tower_kills"]
+      structure_participation = team_structures_destroyed > 0 ? structures_destroyed / team_structures_destroyed : 0
+      first_blood_participation = first_blood_data["first_blood_participation"].to_f / match_count.to_f
+      kill_participation = averages["team_kills"] > 0 ? averages["kills"] / averages["team_kills"] : 1
+      death_participation = averages["team_deaths"] > 0 ? averages["deaths"] / averages["team_deaths"] : 0
+
+      xp_per_min = {zero_ten: (averages["xp_per_min_0_10"] || 0).round(2).to_f,
+                    ten_twenty: (averages["xp_per_min_10_20"] || 0).round(2).to_f,
+                    twenty_thirty: (averages["xp_per_min_20_30"] || 0).round(2).to_f,
+                    thirty_end: (averages["xp_per_min_30_end"] || 0).round(2).to_f}
+      xp_diff = {zero_ten: (averages["xp_diff_0_10"] || 0).round(2).to_f,
+                 ten_twenty: (averages["xp_diff_10_20"] || 0).round(2).to_f,
+                 twenty_thirty: (averages["xp_diff_20_30"] || 0).round(2).to_f,
+                 thirty_end: (averages["xp_diff_30_end"] || 0).round(2).to_f}
+      cs_per_min = {zero_ten: (averages["cs_per_min_0_10"] || 0).round(2).to_f,
+                    ten_twenty: (averages["cs_per_min_10_20"] || 0).round(2).to_f,
+                    twenty_thirty: (averages["cs_per_min_20_30"] || 0).round(2).to_f,
+                    thirty_end: (averages["cs_per_min_30_end"] || 0).round(2).to_f}
+      cs_diff = {zero_ten: (averages["cs_diff_0_10"] || 0).round(2).to_f,
+                 ten_twenty: (averages["cs_diff_10_20"] || 0).round(2).to_f,
+                 twenty_thirty: (averages["cs_diff_20_30"] || 0).round(2).to_f,
+                 thirty_end: (averages["cs_diff_30_end"] || 0).round(2).to_f}
+      gold_per_min = {zero_ten: (averages["gold_per_min_0_10"] || 0).round(2).to_f,
+                      ten_twenty: (averages["gold_per_min_10_20"] || 0).round(2).to_f,
+                      twenty_thirty: (averages["gold_per_min_20_30"] || 0).round(2).to_f,
+                      thirty_end: (averages["gold_per_min_30_end"] || 0).round(2).to_f}
+      damage_taken_diff = {zero_ten: (averages["damage_taken_diff_0_10"] || 0).round(2).to_f,
+                           ten_twenty: (averages["damage_taken_diff_10_20"] || 0).round(2).to_f,
+                           twenty_thirty: (averages["damage_taken_diff_20_30"] || 0).round(2).to_f,
+                           thirty_end: (averages["damage_taken_diff_30_end"] || 0).round(2).to_f}
+
+      {count: match_count,
+       win_rate: (winner_data["winner_count"].to_f / match_count.to_f).round(3).to_f,
        kda: kda.round(2).to_f,
-       duration: matches.average('duration').round(0).to_f,
+       duration: averages["duration"].round(0).to_f,
        structure_participation: structure_participation.round(3).to_f,
-       wards_placed: matches.average('wards_placed').round(2).to_f,
-       wards_killed: matches.average('wards_killed').round(2).to_f,
+       wards_placed: averages["wards_placed"].round(2).to_f,
+       wards_killed: averages["wards_killed"].round(2).to_f,
        first_blood_participation: first_blood_participation.round(3).to_f,
        kill_participation: kill_participation.round(3).to_f,
        death_participation: death_participation.round(3).to_f,
-       total_damage_dealt_champs: total_damage_dealt_champs.round(2).to_f,
-       total_damage_taken: total_damage_taken.round(2).to_f,
-       monsters_team_jungle: monsters_team_jungle.round(2).to_f,
-       monsters_enemy_jungle: monsters_enemy_jungle.round(2).to_f,
-       team_dragon_kills: team_dragon_kills.round(2).to_f,
-       team_baron_kills: team_baron_kills.round(2).to_f,
-       total_cs: total_cs.round(2).to_f,
+       total_damage_dealt_champs: averages["total_damage_dealt_champs"].round(2).to_f,
+       total_damage_taken: averages["total_damage_taken"].round(2).to_f,
+       monsters_team_jungle: averages["monsters_team_jungle"].round(2).to_f,
+       monsters_enemy_jungle: averages["monsters_enemy_jungle"].round(2).to_f,
+       team_dragon_kills: averages["team_dragon_kills"].round(2).to_f,
+       team_baron_kills: averages["team_baron_kills"].round(2).to_f,
+       total_cs: averages["total_cs"].round(2).to_f,
        xp_per_min: xp_per_min,
        xp_diff: xp_diff,
        cs_per_min: cs_per_min,
