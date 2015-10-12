@@ -153,13 +153,13 @@ class ChampionMatch < ActiveRecord::Base
       first_blood_query = %Q(
         SELECT COUNT(cm.id) AS first_blood_participation
         FROM champion_matches cm
-        WHERE cm.id IN (#{champion_match_ids.join(',')}) AND (cm.first_blood_kill=1 OR cm.first_blood_assist=1)
+        WHERE cm.id IN (#{champion_match_ids.join(',')}) AND (cm.first_blood_kill='t' OR cm.first_blood_assist='t')
       )
 
       winner_query = %Q(
         SELECT COUNT(cm.id) AS winner_count
         FROM champion_matches cm
-        WHERE cm.id IN (#{champion_match_ids.join(',')}) AND (cm.winner=1)
+        WHERE cm.id IN (#{champion_match_ids.join(',')}) AND (cm.winner='t')
       )
 
       averages = ActiveRecord::Base.connection.execute(average_query).entries.first
