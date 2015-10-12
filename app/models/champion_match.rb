@@ -163,15 +163,18 @@ class ChampionMatch < ActiveRecord::Base
       )
 
       averages = ActiveRecord::Base.connection.execute(average_query).entries.first
+      averages = Hash[averages.map{|k,v| [k, v.to_f]}]
       first_blood_data = ActiveRecord::Base.connection.execute(first_blood_query).entries.first
+      first_blood_data = Hash[first_blood_data.map{|k,v| [k, v.to_f]}]
       winner_data = ActiveRecord::Base.connection.execute(winner_query).entries.first
+      winner_data = Hash[winner_data.map{|k,v| [k, v.to_f]}]
 
       match_count = champion_match_ids.count
       kda = averages["deaths"] > 0 ? (averages["kills"] + averages["assists"]) / averages["deaths"] : averages["kills"] + averages["assists"]
       structures_destroyed = averages["inhibitor_kills"] + averages["tower_kills"]
       team_structures_destroyed = averages["team_inhibitor_kills"] + averages["team_tower_kills"]
       structure_participation = team_structures_destroyed > 0 ? structures_destroyed / team_structures_destroyed : 0
-      first_blood_participation = first_blood_data["first_blood_participation"].to_f / match_count.to_f
+      first_blood_participation = first_blood_data["first_blood_participation"] / match_count.to_f
       kill_participation = averages["team_kills"] > 0 ? averages["kills"] / averages["team_kills"] : 1
       death_participation = averages["team_deaths"] > 0 ? averages["deaths"] / averages["team_deaths"] : 0
 
@@ -201,7 +204,7 @@ class ChampionMatch < ActiveRecord::Base
                            thirty_end: (averages["damage_taken_diff_30_end"] || 0).round(2).to_f}
 
       {count: match_count,
-       win_rate: (winner_data["winner_count"].to_f / match_count.to_f).round(3).to_f,
+       win_rate: (winner_data["winner_count"] / match_count.to_f).round(3).to_f,
        kda: kda.round(2).to_f,
        duration: averages["duration"].round(0).to_f,
        structure_participation: structure_participation.round(3).to_f,
