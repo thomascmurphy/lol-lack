@@ -6,7 +6,7 @@ namespace :static_data do
     lol_request = Lol::Request.new('na')
     champions = lol_request.champions()
     champions.each do |champion_name, champion_data|
-      champ = Champion.create(champion_id: champion_data['id'], name: champion_name)
+      champ = Champion.find_or_create_by(champion_id: champion_data['id'], name: champion_name)
       champ.save()
     end
   end
