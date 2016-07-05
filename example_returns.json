@@ -3,7 +3,7 @@ MastchList
       {
          "timestamp": 1439334199869,
          "champion": 68,
-         "queue": "RANKED_SOLO_5x5",
+         "queue": "TEAM_BUILDER_DRAFT_RANKED_5x5",
          "season": "SEASON2015",
          "matchId": 1916486336,
          "role": "SOLO",
@@ -22,7 +22,7 @@ Matchhistory
       "region": "NA",
       "mapId": 11,
       "season": "SEASON2015",
-      "queueType": "RANKED_SOLO_5x5",
+      "queueType": "TEAM_BUILDER_DRAFT_RANKED_5x5",
       "matchDuration": 2008,
       "matchCreation": 1438455602016,
       "matchType": "MATCHED_GAME",
@@ -2343,7 +2343,7 @@ Match
    ],
    "mapId": 11,
    "season": "SEASON2015",
-   "queueType": "RANKED_SOLO_5x5",
+   "queueType": "TEAM_BUILDER_DRAFT_RANKED_5x5",
    "matchId": 1905936934,
    "matchDuration": 2008
 }
