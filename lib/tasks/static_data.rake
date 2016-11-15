@@ -38,6 +38,7 @@ namespace :static_data do
   end
 
   task convert_game_data: :environment do
+    Delayed::Job.where("run_at < '#{DateTime.now().utc - 5.minutes}'")
     if Delayed::Job.where("handler LIKE '%MatchDataJob%'").count() < 100
       limit = Rails.env == 'production' ? 50 : 10
       if Rails.env == 'production'
@@ -54,7 +55,6 @@ namespace :static_data do
   task clean_old_game_data: :environment do
     Match.where("timestamp < ?", Match.date_cutoff()).delete_all()
     ChampionMatch.where("timestamp < ?", Match.date_cutoff()).delete_all()
-    Delayed::Job.where("run_at < '#{DateTime.now().utc.to_s}'").destroy_all()
   end
 
 end
