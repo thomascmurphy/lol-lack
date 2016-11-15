@@ -54,6 +54,7 @@ namespace :static_data do
   task clean_old_game_data: :environment do
     Match.where("timestamp < ?", Match.date_cutoff()).delete_all()
     ChampionMatch.where("timestamp < ?", Match.date_cutoff()).delete_all()
+    Delayed::Job.where("run_at < '#{DateTime.now().utc.to_s}'").destroy_all()
   end
 
 end
