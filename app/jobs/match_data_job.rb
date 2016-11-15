@@ -9,7 +9,7 @@ class MatchDataJob < Struct.new(:match_id_ours)
 
   def self.queue_time
     last_job = Delayed::Job.where("handler LIKE '%MatchDataJob%'").order("run_at DESC").first()
-    if last_job.present?
+    if last_job.present? && last_job.run_at > DateTime.now().utc
       last_job.run_at + 5.seconds
     else
       DateTime.now().utc
