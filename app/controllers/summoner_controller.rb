@@ -36,7 +36,7 @@ class SummonerController < ApplicationController
           @summoner.summoner_id = summoner_data[summoner_data.keys[0]]["id"]
           full_league_data = lol_request.league_by_summoner(@summoner.summoner_id)
           league_data = full_league_data[full_league_data.keys[0]]
-          solo_league = league_data[league_data.find_index {|ranking| ranking["queue"] == "RANKED_SOLO_5x5"}]
+          solo_league = league_data[league_data.find_index {|ranking| ranking["queue"] == "TEAM_BUILDER_RANKED_SOLO"}]
           if solo_league.present?
             @summoner.tier = solo_league["tier"]
           end
@@ -56,7 +56,7 @@ class SummonerController < ApplicationController
         end
 
         api_query = {championIds: champion_id,
-                     rankedQueues: 'RANKED_FLEX_SR',
+                     rankedQueues: 'TEAM_BUILDER_RANKED_SOLO',
                      beginIndex: 0,
                      endIndex: game_count}
         user_games = @summoner.get_champion_matches(api_query).where(user_query_hash)
