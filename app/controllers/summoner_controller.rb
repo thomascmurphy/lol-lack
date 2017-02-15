@@ -56,7 +56,7 @@ class SummonerController < ApplicationController
         end
 
         api_query = {championIds: champion_id,
-                     rankedQueues: 'TEAM_BUILDER_DRAFT_RANKED_5x5',
+                     rankedQueues: 'RANKED_FLEX_SR',
                      beginIndex: 0,
                      endIndex: game_count}
         user_games = @summoner.get_champion_matches(api_query).where(user_query_hash)

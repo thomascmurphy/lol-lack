@@ -323,7 +323,7 @@ if(!full_donut){
     svg.append(center_small);
 
     if(has_key){
-      var key_line_height = height / key_data.length;
+      var key_line_height = area_height / key_data.length;
       var key_circle_radius = Math.min(5, key_line_height);
       for(var i=0; i<key_data.length; i++){
         var key_data_item = key_data[i];
@@ -511,7 +511,7 @@ if(!full_donut){
     }
 
     if(has_key){
-      var key_line_height = (height - offset_top) / key_data.length;
+      var key_line_height = (area_height - offset_top) / key_data.length;
       var key_circle_radius = Math.min(5, key_line_height);
       for(var i=0; i<key_data.length; i++){
         var key_data_item = key_data[i];
@@ -596,7 +596,7 @@ if(!full_donut){
         edge_tooltips = options.edge_tooltips || false,
         categories = options.categories || false,
         categories_colors = options.categories_colors,
-        dot_radius = 1.5,
+        dot_radius = options.dot_radius || 1.5,
         offset_top = !title ? dot_radius*2 : 10,
         offset_bottom = !show_fit ? dot_radius*2 : 10;
         center_x = width/2,
@@ -632,27 +632,10 @@ if(!full_donut){
     var tooltip_pieces = [];
     var category_pieces = {};
 
-    var edge_angle = start_angle;
     var category_counter = 0;
     for(var j=0; j<data[0]['values'].length; j++) {
     	var data_item = data[0]['values'][j],
-    	coord_x = start_x + inner_radius * (cos(edge_angle)),
-      coord_y = start_y - inner_radius * (sin(edge_angle));
-
-      if(edge_tooltips) {
-      	var piece_path = makeSVG('circle',
-                                 {
-                                   cx: coord_x,
-                                   cy: coord_y,
-                                   r: dot_radius,
-                                   fill: border_color,
-                                   "data-title": data_item.name,
-                                   "data-value": tooltip_values[j].join('<br/>'),
-                                   class: "graph_piece"
-                                 });
-        svg.append(piece_path);
-        edge_angle += angle_step;
-      }
+      graph_name = data[0]['title'];
 
       if(categories){
         if (typeof(data_item.category) == "string") {
@@ -772,15 +755,24 @@ if(!full_donut){
         var data_item = data[i]['values'][j],
         coord_x = start_x + (inner_radius * data_item.value/data_max) * (cos(piece_angle)),
         coord_y = start_y - (inner_radius * data_item.value/data_max) * (sin(piece_angle)),
-        color = colors[i%colors.length];
+        color = colors[i%colors.length],
+        tooltip_value = graph_name + ": " + data_item.value + "/" + data_max;
+
+        if (data_item.hasOwnProperty('tooltip_value')) {
+          if (data_item.tooltip_value.constructor == Array) {
+            tooltip_value = data_item.tooltip_value.join(', ');
+          } else {
+            tooltip_value = data_item.tooltip_value;
+          }
+        };
 
         coords.push(coord_x + ',' + coord_y);
         piece_angle += angle_step;
         if(edge_tooltips) {
           if(tooltip_values[j]) {
-	          tooltip_values[j].push(graph_name + ": " + data_item.value + "/" + data_max);
+	          tooltip_values[j].push(tooltip_value);
 	        } else {
-		        tooltip_values[j] = [graph_name + ": " + data_item.value + "/" + data_max];
+		        tooltip_values[j] = [tooltip_value];
 	        }
         }
         else {
@@ -791,7 +783,7 @@ if(!full_donut){
                                              r: dot_radius,
                                              fill: color,
                                              "data-title": data_item.name,
-                                             "data-value": graph_name + ": " + data_item.value + "/" + data_max,
+                                             "data-value": tooltip_value,
                                              class: "graph_piece"
                                            });
 	        tooltip_pieces.push(tooltip_piece_path);
@@ -821,8 +813,31 @@ if(!full_donut){
       key_data.push({'color': color, 'title': data[i]['title']});
     }
 
+    if(edge_tooltips) {
+      var edge_angle = start_angle;
+      for(var j=0; j<data[0]['values'].length; j++) {
+      	var data_item = data[0]['values'][j],
+        graph_name = data[0]['title'],
+      	coord_x = start_x + inner_radius * (cos(edge_angle)),
+        coord_y = start_y - inner_radius * (sin(edge_angle));
+
+      	var piece_path = makeSVG('circle',
+                                 {
+                                   cx: coord_x,
+                                   cy: coord_y,
+                                   r: dot_radius,
+                                   fill: border_color,
+                                   "data-title": data_item.name,
+                                   "data-value": tooltip_values[j].join('<br/>'),
+                                   class: "graph_piece"
+                                 });
+        svg.append(piece_path);
+        edge_angle += angle_step;
+      }
+    }
+
     if(has_key) {
-      var key_line_height = (height - offset_top) / key_data.length;
+      var key_line_height = (area_height - offset_top) / key_data.length;
       var key_circle_radius = Math.min(5, key_line_height);
       for(var i=0; i<key_data.length; i++) {
         var key_data_item = key_data[i];
@@ -1251,45 +1266,49 @@ if(!full_donut){
         aspect_ratio = options.aspect_ratio ? options.aspect_ratio : 2,
         width = 100 * aspect_ratio,
         height = 100,
+        offset_top = 0,
         colors = options.colors,
         show_area_color = typeof options.show_area_color === 'undefined' ? true : options.show_area_color
         background_color = options.background_color || '#fff',
         title = options.title,
         hover = options.hover,
-        dot_radius = 1.5,
+        dot_radius = options.dot_radius || 1.5,
         separate_scales = typeof options.separate_scales === 'undefined' ? false : options.separate_scales,
         zoom_y = typeof options.zoom_y === 'undefined' ? 0 : options.zoom_y,
         height_adjustment = typeof options.height_adjustment === 'undefined' ? 1 : options.height_adjustment,
+        has_key = options.has_key || false,
         cos = Math.cos,
         sin = Math.sin,
         PI = Math.PI;
 
     var svg = $('<svg width="100%" height="100%" viewBox="0, 0, ' + width +', '+ height +'" xmlns="http://www.w3.org/2000/svg"></svg>').appendTo(element);
 
-    var area_width = width - 2 * dot_radius;
+    var area_width = has_key ? width - 75 - 2 * dot_radius : width - 2 * dot_radius;
     var area_height = hover && !title ? height : height - 10;
     var max_point_height = area_height - 10;
     var data_max = null;
     var data_min = null;
     var data_maxes = [];
     var data_mins = [];
+    var key_data = [];
 
     for(var j=0; j<data.length; j++) {
       data_maxes.push(null);
       data_mins.push(null);
-      for(var i=0; i<data[j].length; i++){
-        if(data_max == null || data[j][i].value > data_max){
-          data_max = data[j][i].value;
+      var data_items = data[j].hasOwnProperty('values') ? data[j]['values'] : data[j];
+      for(var i=0; i<data_items.length; i++){
+        if(data_max == null || data_items[i].value > data_max){
+          data_max = data_items[i].value;
         }
-        if(data_min == null || data[j][i].value < data_min){
-          data_min = data[j][i].value;
+        if(data_min == null || data_items[i].value < data_min){
+          data_min = data_items[i].value;
         }
 
-        if(data_maxes[j] == null || data[j][i].value > data_maxes[j]){
-          data_maxes[j] = data[j][i].value;
+        if(data_maxes[j] == null || data_items[i].value > data_maxes[j]){
+          data_maxes[j] = data_items[i].value;
         }
-        if(data_mins[j] == null || data[j][i].value < data_mins[j]){
-          data_mins[j] = data[j][i].value;
+        if(data_mins[j] == null || data_items[i].value < data_mins[j]){
+          data_mins[j] = data_items[i].value;
         }
       }
     }
@@ -1305,8 +1324,9 @@ if(!full_donut){
     var dots = [];
 
     for(var j=0; j<data.length; j++) {
-      var point_spacing = data[j].length > 1 ? area_width / (data[j].length - 1) : area_width,
-          start_x = (width - area_width)/2,
+      var data_items = data[j].hasOwnProperty('values') ? data[j]['values'] : data[j],
+          point_spacing = data_items.length > 1 ? area_width / (data_items.length - 1) : area_width,
+          start_x = dot_radius,
           start_y = area_height,
           coords = [],
           color = colors[j%colors.length],
@@ -1314,8 +1334,8 @@ if(!full_donut){
           line_data_min = separate_scales ? data_mins[j] : data_min,
           line_height_adjustment = separate_scales ? height_adjustments[j] : height_adjustment;
 
-      for(var i=0; i<data[j].length; i++){
-        var data_item = data[j][i],
+      for(var i=0; i<data_items.length; i++){
+        var data_item = data_items[i],
             coord_x = start_x,
             coord_y = area_height - max_point_height * (data_item.value + line_height_adjustment - line_data_min * zoom_y) / (line_data_max - line_data_min * zoom_y),
             tooltip_value = data_item.value;
@@ -1369,12 +1389,40 @@ if(!full_donut){
                                  });
         svg.append(line_path);
       }
+      key_data.push({'color': color, 'title': data[j]['title'] || title});
 
     }
     for (k=0; k<dots.length; k++){
       svg.append(dots[k]);
     }
 
+    if(has_key) {
+      var key_lines = Math.max(10, key_data.length);
+      var key_line_height = (area_height - offset_top) / key_lines;
+      var key_circle_radius = Math.min(3, key_line_height/2);
+      console.log(key_circle_radius, key_line_height);
+      for(var i=0; i<key_data.length; i++) {
+        var key_data_item = key_data[i];
+        var key_circle = makeSVG('circle',
+                                 {
+                                   cx: area_width + 2*key_circle_radius,
+                                   cy: offset_top + (i*key_line_height) + key_circle_radius,
+                                   r: key_circle_radius,
+                                   fill: key_data_item['color'],
+                                   class: 'key_circle'
+                                 });
+        var key_text = makeSVG('text',
+                               {
+                                 x: area_width + 4*key_circle_radius,
+                                 y: offset_top + i*key_line_height + 1.5*key_circle_radius,
+                                 fill: secondary_text_color,
+                                 class: 'key_text'
+                               },
+                               key_data_item.title);
+        svg.append(key_circle);
+        svg.append(key_text);
+      }
+    }
 
     if(hover && title){
       var graph_title = makeSVG('text',
