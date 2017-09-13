@@ -6,7 +6,7 @@ namespace :static_data do
     lol_request = Lol::Request.new('na')
     champions = lol_request.champions()
     champions.each do |champion_name, champion_data|
-      champ = Champion.find_or_create_by(champion_id: champion_data['id'], name: champion_name)
+      champ = Champion.find_or_create_by(champion_id: champion_data['id'], name: champion_data['name'])
       champ.save()
     end
   end
@@ -31,7 +31,7 @@ namespace :static_data do
     #25850956 = Nightblue3 (master)
     #65409090 = GodPiglet (challenger)
     summoner_ids = [60263441, 19522880, 53884466, 40308699, 39567812, 25850956, 65409090]
-    query = {rankedQueues: 'TEAM_BUILDER_RANKED_SOLO'}
+    query = {queue: MATCH::QUEUE_IDS.ranked_solo}
     summoner_ids.each do |summoner_id|
       Match.delay.grab_summoner_match_ids(summoner_id, 'na', query)
     end

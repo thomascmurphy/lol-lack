@@ -1,5 +1,7 @@
 class Match < ActiveRecord::Base
 
+  QUEUE_IDS = {ranked_solo: 420, ranked_flex: 440}
+
   def self.date_cutoff
     Time.now.utc - 60.days
   end
@@ -12,7 +14,7 @@ class Match < ActiveRecord::Base
       api_response = lol_request.match_detail(self.match_id)
       if api_response.present? && api_response.has_key?("participantIdentities")
         if self.timestamp.blank?
-          self.timestamp = Time.at((api_response["matchCreation"]/1000).round(0)).utc
+          self.timestamp = Time.at((api_response["gameCreation"]/1000).round(0)).utc
           self.save()
         end
         summoners = []
@@ -22,7 +24,7 @@ class Match < ActiveRecord::Base
           participant_data = api_response["participants"][api_response["participants"].find_index {|item| item["participantId"] == participant_id}]
           team_id = participant_data["teamId"]
           team_data = api_response["teams"][api_response["teams"].find_index {|item| item["teamId"] == team_id}]
-          existing_match = ChampionMatch.find_by(match_id: api_response["matchId"], summoner_id: summoner_id)
+          existing_match = ChampionMatch.find_by(match_id: api_response["gameId"], summoner_id: summoner_id)
           if existing_match.blank?
             champion_match = ChampionMatch.new()
             champion_match.convert_common_fields(api_response)
@@ -34,7 +36,7 @@ class Match < ActiveRecord::Base
             champion_match_ids << existing_match.id
           end
           if propogate && ChampionMatch.where(champion_id: participant_data["championId"], tier: participant_data["highestAchievedSeasonTier"]).count < 50 && Match.where(processed: false).count() < 500000
-            query = {rankedQueues: 'TEAM_BUILDER_RANKED_SOLO',
+            query = {queue: QUEUE_IDS.ranked_solo,
                      beginIndex: 0,
                      endIndex: 10}
             matches = self.class.grab_summoner_match_ids(summoner_id, self.region, query)
@@ -58,7 +60,7 @@ class Match < ActiveRecord::Base
       user_games["matches"].each do |user_game|
         match_timestamp = Time.at((user_game["timestamp"]/1000).round(0)).utc
         if match_timestamp >= self.date_cutoff()
-          match = Match.find_or_initialize_by(match_id: user_game["matchId"], region: region)
+          match = Match.find_or_initialize_by(match_id: user_game["gameId"], region: region)
           if match.timestamp.blank?
             match.timestamp = match_timestamp
             match.save()

@@ -1,12 +1,12 @@
 class ChampionMatch < ActiveRecord::Base
 
   def convert_common_fields(api_response)
-    self.match_id = api_response["matchId"]
-    self.region = api_response["region"]
-    self.season = api_response["season"]
-    self.version = api_response["matchVersion"]
-    self.duration = api_response["matchDuration"]
-    self.timestamp = Time.at((api_response["matchCreation"]/1000).round(0)).utc
+    self.match_id = api_response["gameId"]
+    self.region = api_response["platformId"]
+    self.season = api_response["seasonId"]
+    self.version = api_response["gameVersion"]
+    self.duration = api_response["gameDuration"]
+    self.timestamp = Time.at((api_response["gameCreation"]/1000).round(0)).utc
     self.save()
   end
 
@@ -38,7 +38,7 @@ class ChampionMatch < ActiveRecord::Base
     self.champion_id = api_response["championId"]
     self.lane = api_response["timeline"]["lane"]
     self.role = api_response["timeline"]["role"]
-    self.winner = api_response["stats"]["winner"]
+    self.winner = api_response["stats"]["win"]
     self.kills = api_response["stats"]["kills"]
     self.deaths = api_response["stats"]["deaths"]
     self.assists = api_response["stats"]["assists"]
@@ -50,50 +50,50 @@ class ChampionMatch < ActiveRecord::Base
     self.first_blood_assist = api_response["stats"]["firstBloodAssist"]
     self.total_damage_dealt_champs = api_response["stats"]["totalDamageDealtToChampions"]
     self.total_damage_taken = api_response["stats"]["totalDamageTaken"]
-    self.total_cs = api_response["stats"]["minionsKilled"]
+    self.total_cs = api_response["stats"]["totalMinionsKilled"]
     self.monsters_enemy_jungle = api_response["stats"]["neutralMinionsKilledEnemyJungle"]
     self.monsters_team_jungle = api_response["stats"]["neutralMinionsKilledTeamJungle"]
 
     if api_response["timeline"].has_key?("xpPerMinDeltas")
-      self.xp_per_min_0_10 = api_response["timeline"]["xpPerMinDeltas"]["zeroToTen"]
-      self.xp_per_min_10_20 = api_response["timeline"]["xpPerMinDeltas"]["tenToTwenty"]
-      self.xp_per_min_20_30 = api_response["timeline"]["xpPerMinDeltas"]["twentyToThirty"]
-      self.xp_per_min_30_end = api_response["timeline"]["xpPerMinDeltas"]["thirtyToEnd"]
+      self.xp_per_min_0_10 = api_response["timeline"]["xpPerMinDeltas"]["0-10"]
+      self.xp_per_min_10_20 = api_response["timeline"]["xpPerMinDeltas"]["10-20"]
+      self.xp_per_min_20_30 = api_response["timeline"]["xpPerMinDeltas"]["20-30"]
+      self.xp_per_min_30_end = api_response["timeline"]["xpPerMinDeltas"]["30-end"]
     end
 
     if api_response["timeline"].has_key?("xpDiffPerMinDeltas")
-      self.xp_diff_0_10 = api_response["timeline"]["xpDiffPerMinDeltas"]["zeroToTen"]
-      self.xp_diff_10_20 = api_response["timeline"]["xpDiffPerMinDeltas"]["tenToTwenty"]
-      self.xp_diff_20_30 = api_response["timeline"]["xpDiffPerMinDeltas"]["twentyToThirty"]
-      self.xp_diff_30_end = api_response["timeline"]["xpDiffPerMinDeltas"]["thirtyToEnd"]
+      self.xp_diff_0_10 = api_response["timeline"]["xpDiffPerMinDeltas"]["0-10"]
+      self.xp_diff_10_20 = api_response["timeline"]["xpDiffPerMinDeltas"]["10-20"]
+      self.xp_diff_20_30 = api_response["timeline"]["xpDiffPerMinDeltas"]["20-30"]
+      self.xp_diff_30_end = api_response["timeline"]["xpDiffPerMinDeltas"]["30-end"]
     end
 
     if api_response["timeline"].has_key?("creepsPerMinDeltas")
-      self.cs_per_min_0_10 = api_response["timeline"]["creepsPerMinDeltas"]["zeroToTen"]
-      self.cs_per_min_10_20 = api_response["timeline"]["creepsPerMinDeltas"]["tenToTwenty"]
-      self.cs_per_min_20_30 = api_response["timeline"]["creepsPerMinDeltas"]["twentyToThirty"]
-      self.cs_per_min_30_end = api_response["timeline"]["creepsPerMinDeltas"]["thirtyToEnd"]
+      self.cs_per_min_0_10 = api_response["timeline"]["creepsPerMinDeltas"]["0-10"]
+      self.cs_per_min_10_20 = api_response["timeline"]["creepsPerMinDeltas"]["10-20"]
+      self.cs_per_min_20_30 = api_response["timeline"]["creepsPerMinDeltas"]["20-30"]
+      self.cs_per_min_30_end = api_response["timeline"]["creepsPerMinDeltas"]["30-end"]
     end
 
     if api_response["timeline"].has_key?("csDiffPerMinDeltas")
-      self.cs_diff_0_10 = api_response["timeline"]["csDiffPerMinDeltas"]["zeroToTen"]
-      self.cs_diff_10_20 = api_response["timeline"]["csDiffPerMinDeltas"]["tenToTwenty"]
-      self.cs_diff_20_30 = api_response["timeline"]["csDiffPerMinDeltas"]["twentyToThirty"]
-      self.cs_diff_30_end = api_response["timeline"]["csDiffPerMinDeltas"]["thirtyToEnd"]
+      self.cs_diff_0_10 = api_response["timeline"]["csDiffPerMinDeltas"]["0-10"]
+      self.cs_diff_10_20 = api_response["timeline"]["csDiffPerMinDeltas"]["10-20"]
+      self.cs_diff_20_30 = api_response["timeline"]["csDiffPerMinDeltas"]["20-30"]
+      self.cs_diff_30_end = api_response["timeline"]["csDiffPerMinDeltas"]["30-end"]
     end
 
     if api_response["timeline"].has_key?("goldPerMinDeltas")
-      self.gold_per_min_0_10 = api_response["timeline"]["goldPerMinDeltas"]["zeroToTen"]
-      self.gold_per_min_10_20 = api_response["timeline"]["goldPerMinDeltas"]["tenToTwenty"]
-      self.gold_per_min_20_30 = api_response["timeline"]["goldPerMinDeltas"]["twentyToThirty"]
-      self.gold_per_min_30_end = api_response["timeline"]["goldPerMinDeltas"]["thirtyToEnd"]
+      self.gold_per_min_0_10 = api_response["timeline"]["goldPerMinDeltas"]["0-10"]
+      self.gold_per_min_10_20 = api_response["timeline"]["goldPerMinDeltas"]["10-20"]
+      self.gold_per_min_20_30 = api_response["timeline"]["goldPerMinDeltas"]["20-30"]
+      self.gold_per_min_30_end = api_response["timeline"]["goldPerMinDeltas"]["30-end"]
     end
 
     if api_response["timeline"].has_key?("damageTakenDiffPerMinDeltas")
-      self.damage_taken_diff_0_10 = api_response["timeline"]["damageTakenDiffPerMinDeltas"]["zeroToTen"]
-      self.damage_taken_diff_10_20 = api_response["timeline"]["damageTakenDiffPerMinDeltas"]["tenToTwenty"]
-      self.damage_taken_diff_20_30 = api_response["timeline"]["damageTakenDiffPerMinDeltas"]["twentyToThirty"]
-      self.damage_taken_diff_30_end = api_response["timeline"]["damageTakenDiffPerMinDeltas"]["thirtyToEnd"]
+      self.damage_taken_diff_0_10 = api_response["timeline"]["damageTakenDiffPerMinDeltas"]["0-10"]
+      self.damage_taken_diff_10_20 = api_response["timeline"]["damageTakenDiffPerMinDeltas"]["10-20"]
+      self.damage_taken_diff_20_30 = api_response["timeline"]["damageTakenDiffPerMinDeltas"]["20-30"]
+      self.damage_taken_diff_30_end = api_response["timeline"]["damageTakenDiffPerMinDeltas"]["30-end"]
     end
 
     self.save()

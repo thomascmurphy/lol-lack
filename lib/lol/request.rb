@@ -6,7 +6,7 @@ module Lol
   class Request
 
     include HTTParty
-    base_uri 'https://na.api.pvp.net/api/lol'
+    base_uri 'https://na.api.riotgames.com/lol'
 
     def initialize(region="na")
       @region = region
@@ -29,35 +29,35 @@ module Lol
     end
 
     def latest_version
-      call('versions', 1.2, {}, true)[0]
+      call('versions', 3, {}, true)[0]
     end
 
     def champions
-      call('champion', 1.2, {}, true)['data']
+      call('champions', 3, {}, true)['data']
     end
 
     def champion(id, query={})
-      call("champion/#{id}", 1.2, query, true)['data']
+      call("champions/#{id}", 3, query, true)
     end
 
     def summoner_by_name(summoner_name)
-      call("summoner/by-name/#{summoner_name}", 1.4)
+      call("summoner/by-name/#{summoner_name}", 3)
     end
 
-    def match_list(user_id, query={})
-      call("matchlist/by-summoner/#{user_id}", 2.2, query)
+    def match_list(account_id, query={})
+      call("matchlists/by-account/#{account_id}", 3, query)
     end
 
     def match_history_detailed(user_id, query={})
-      call("matchhistory/#{user_id}", 2.2, query)
+      call("matchhistory/#{user_id}", 3, query)
     end
 
     def match_detail(match_id)
-      call("match/#{match_id}", 2.2)
+      call("matches/#{match_id}", 3)
     end
 
     def league_by_summoner(summoner_id)
-      call("league/by-summoner/#{summoner_id}/entry", 2.5)
+      call("leagues/by-summoner/#{summoner_id}", 3)
     end
 
   end
